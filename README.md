@@ -1,5 +1,5 @@
 # Tetris
-Tetris game cloned from PSNB92/Tetris with extended fucntionality.
+Tetris game cloned from PSNB92/Tetris with extended functionality.
 
 - [ ] The game has the ability to save and load a previous version of the game
 - [ ] The game displays the keys to save and load (G & C) on the right pane of the screen
