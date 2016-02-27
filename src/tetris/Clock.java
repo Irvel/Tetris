@@ -1,4 +1,4 @@
-package org.psnbtech;
+package tetris;
 
 /**
  * The {@code Clock} class is responsible for tracking the number of cycles

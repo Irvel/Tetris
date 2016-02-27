@@ -1,4 +1,4 @@
-package org.psnbtech;
+package tetris;
 
 import java.awt.Color;
 import java.awt.Dimension;
