@@ -265,7 +265,7 @@ public class BoardPanel extends JPanel {
 	private void setTile(int  x, int y, TileType type) {
 		tiles[y][x] = type;
 	}
-		
+
 	/**
 	 * Gets a tile by it's column and row.
 	 * @param x The column.
