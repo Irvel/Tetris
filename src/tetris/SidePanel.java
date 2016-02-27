@@ -65,7 +65,7 @@ public class SidePanel extends JPanel {
 	/**
 	 * The y coordinate of the controls category.
 	 */
-	private static final int CONTROLS_INSET = 300;
+	private static final int CONTROLS_INSET = 270;
 	
 	/**
 	 * The number of pixels to offset between each string.
@@ -75,12 +75,12 @@ public class SidePanel extends JPanel {
 	/**
 	 * The small font.
 	 */
-	private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 11);
+	private static final Font SMALL_FONT = new Font("Helvetica", Font.BOLD, 11);
 	
 	/**
 	 * The large font.
 	 */
-	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 13);
+	private static final Font LARGE_FONT = new Font("Helvetica", Font.BOLD, 13);
 	
 	/**
 	 * The color to draw the text and preview box in.
@@ -138,7 +138,9 @@ public class SidePanel extends JPanel {
 		g.drawString("E - Rotate Clockwise", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("S - Drop", LARGE_INSET, offset += TEXT_STRIDE);
 		g.drawString("P - Pause Game", LARGE_INSET, offset += TEXT_STRIDE);
-		
+		g.drawString("G - Save Game", LARGE_INSET, offset += TEXT_STRIDE);
+		g.drawString("C - Load Game", LARGE_INSET, offset += TEXT_STRIDE);
+
 		/*
 		 * Draw the next piece preview box.
 		 */

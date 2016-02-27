@@ -281,7 +281,7 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * Sets the tyle matrix
+	 * Sets the tile matrix
 	 * @param tilMat The tile matrix.
 	 */
 	public void setTiles(TileType[][] tilMat) {
