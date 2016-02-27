@@ -275,6 +275,22 @@ public class BoardPanel extends JPanel {
 	private TileType getTile(int x, int y) {
 		return tiles[y][x];
 	}
+
+	/**
+	 * Gets the entire tile matrix tile.
+	 * @return The tile matrix.
+	 */
+	public TileType[][] getTiles() {
+		return tiles;
+	}
+
+	/**
+	 * Sets the tyle matrix
+	 * @param tilMat The tile matrix.
+	 */
+	public void setTiles(TileType[][] tilMat) {
+		tiles = tilMat;
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
