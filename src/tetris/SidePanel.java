@@ -1,11 +1,7 @@
 package tetris;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * The {@code SidePanel} class is responsible for displaying various information
