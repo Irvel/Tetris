@@ -1,11 +1,13 @@
 package tetris;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
-import javax.swing.JFrame;
+import static tetris.StateHandler.loadGame;
+import static tetris.StateHandler.saveGame;
 
 /**
  * The {@code Tetris} class is responsible for handling much of the game logic and
@@ -283,7 +285,7 @@ public class Tetris extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
+
 	/**
 	 * Starts the game running. Initializes everything and enters the game loop.
 	 */
@@ -305,7 +307,6 @@ public class Tetris extends JFrame {
 		while(true) {
 			//Get the time that the frame started.
 			long start = System.nanoTime();
-			
 			//Update the logic timer.
 			logicTimer.update();
 			
@@ -418,7 +419,7 @@ public class Tetris extends JFrame {
 		logicTimer.setCyclesPerSecond(gameSpeed);
 		spawnPiece();
 	}
-		
+
 	/**
 	 * Spawns a new piece and resets our piece's variables to their default
 	 * values.
