@@ -125,7 +125,7 @@ public class Tetris extends JFrame {
 		 */
 		super("Tetris");
 		setLayout(new BorderLayout());
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setResizable(false);
 		
 		/*
@@ -537,6 +537,14 @@ public class Tetris extends JFrame {
 	public int getLevel() {
 		return level;
 	}
+
+	/**
+	 * Gets the current game speed.
+	 * @return The game speed.
+	 */
+	public float getGameSpeed() {
+		return gameSpeed;
+	}
 	
 	/**
 	 * Gets the current type of piece we're using.
@@ -548,7 +556,7 @@ public class Tetris extends JFrame {
 	
 	/**
 	 * Gets the next type of piece we're using.
-	 * @return The next piece.
+	 * @return The next piece type.
 	 */
 	public TileType getNextPieceType() {
 		return nextType;
@@ -576,6 +584,120 @@ public class Tetris extends JFrame {
 	 */
 	public int getPieceRotation() {
 		return currentRotation;
+	}
+
+	/**
+	 * Gets the board panel of the current game
+	 * @return The board panel.
+	 */
+	public BoardPanel getBoard() {
+		return board;
+	}
+
+	/**
+	 * Gets the amount of time after a piece has been spawned before it can 
+	 * be dropped
+	 * @return The drop cooldown amount.
+	 */
+	public int getDropCooldown() {
+		return dropCooldown;
+	}
+
+	/**
+	 * Sets whether or not the game is paused.
+	 * @param isPaused Whether or not the game is paused.
+	 */
+	public void setPaused(boolean isPaused) {
+		this.isPaused = isPaused;
+	}
+	
+	/**
+	 * Sets whether or not the game is over.
+	 * @param isGameOver Whether or not the game is over.
+	 */
+	public void setGameOver(boolean isGameOver) {
+		this.isGameOver = isGameOver;
+	}
+	
+	/**
+	 * Sets whether or not we're on a new game.
+	 * @param isNewGame Whether or not this is a new game.
+	 */
+	public void setNewGame(boolean isNewGame) {
+		this.isNewGame = isNewGame;
+	}
+	
+	/**
+	 * Sets the current score.
+	 * @param score The score.
+	 */
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	/**
+	 * Sets the current level.
+	 * @param level The level.
+	 */
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	/**
+	 * Sets the current game speed.
+	 * @param gameSpeed The game speed.
+	 */
+	public void setGameSpeed(float gameSpeed) {
+		this.gameSpeed = gameSpeed;
+	}
+	
+	/**
+	 * Sets the current type of piece we're using.
+	 * @param currentType  piece type.
+	 */
+	public void setPieceType(TileType currentType) {
+		this.currentType = currentType;
+	}
+	
+	/**
+	 * Sets the next type of piece we're using.
+	 * @param nextType The next piece.
+	 */
+	public void setNextPieceType(TileType nextType) {
+		this.nextType = nextType;
+	}
+	
+	/**
+	 * Sets the column of the current piece.
+	 * @param currentCol The column.
+	 */
+	public void setPieceCol(int currentCol) {
+		this.currentCol = currentCol;
+	}
+	
+	/**
+	 * Sets the row of the current piece.
+	 * @param currentRow The row.
+	 */
+	public void setPieceRow(int currentRow) {
+		this.currentRow = currentRow;
+	}
+	
+	/**
+	 * Sets the rotation of the current piece.
+	 * @param currentRotation The rotation.
+	 */
+	public void setPieceRotation(int currentRotation) {
+		this.currentRotation = currentRotation;
+	}
+
+	/**
+	 * Sets the amount of time after a piece has been spawned before it can 
+	 * be dropped
+	 * @param dropCooldown The drop cooldown amount.
+	 */
+	public void setDropCooldown(int dropCooldown) {
+		this.dropCooldown = dropCooldown;
 	}
 
 	/**
