@@ -114,6 +114,11 @@ public class Tetris extends JFrame {
 	 * The speed of the game.
 	 */
 	private float gameSpeed;
+
+	/**
+	 * The sound for each time a tile falls to the bottom.
+	 */
+	private SoundClip sBottom;
 		
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
@@ -296,6 +301,7 @@ public class Tetris extends JFrame {
 		this.random = new Random();
 		this.isNewGame = true;
 		this.gameSpeed = 1.0f;
+		this.sBottom = new SoundClip("tileBottom.wav");
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
@@ -356,6 +362,7 @@ public class Tetris extends JFrame {
 			 * we need to add the piece to the board.
 			 */
 			board.addPiece(currentType, currentCol, currentRow, currentRotation);
+			sBottom.play();
 			
 			/*
 			 * Check to see if adding the new piece resulted in any cleared lines. If so,
