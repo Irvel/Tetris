@@ -10,7 +10,9 @@ import java.awt.Color;
 public enum TileType {
 
 	/**
-	 * Piece TypeI.
+	 * Piece TypeI
+	 * Each boolean represents a block inside a grid of 4X4. When it has a
+	 * value of true, the block is part of that specific type of Tile.
 	 */
 	TypeI(new Color(BoardPanel.COLOR_MIN, BoardPanel.COLOR_MAX, BoardPanel.COLOR_MAX), 4, 4, 1, new boolean[][] {
 		{

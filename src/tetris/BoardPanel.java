@@ -102,7 +102,14 @@ public class BoardPanel extends JPanel {
 	 * The tiles that make up the board.
 	 */
 	private TileType[][] tiles;
-		
+
+	/**
+	 * The current amount of brightness a piece is being drawn with to
+	 * animate a
+	 * "shining" effect.
+	 */
+	private int shineFactor;
+
 	/**
 	 * Crates a new GameBoard instance.
 	 * @param tetris The Tetris instance to use.
@@ -110,7 +117,7 @@ public class BoardPanel extends JPanel {
 	public BoardPanel(Tetris tetris) {
 		this.tetris = tetris;
 		this.tiles = new TileType[ROW_COUNT][COL_COUNT];
-		
+		this.shineFactor = 0;
 		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 	}
@@ -287,6 +294,21 @@ public class BoardPanel extends JPanel {
 	public void setTiles(TileType[][] tilMat) {
 		tiles = tilMat;
 	}
+
+	/**
+	 * Increases the brightness of a given color by a given factor
+	 * @param brightFactor The brightness factor.
+	 * @param color The original color to increase brightness on.
+	 * @return     a new <code>Color</code> object that is
+	 *             a brighter version of the received <code>Color</code>
+	 *             by a factor of brightFactor.
+	 */
+	private Color brighter(Color color, int brightFactor) {
+		for (int i = 0; i < brightFactor; i++){
+			color = color.brighter();
+		}
+		return color;
+	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -341,12 +363,33 @@ public class BoardPanel extends JPanel {
 			int pieceCol = tetris.getPieceCol();
 			int pieceRow = tetris.getPieceRow();
 			int rotation = tetris.getPieceRotation();
-			
+			/*
+			 * Limit the amount of brightness a piece can be drawn with to
+			 * animate a "shining" effect.
+			 */
+			if(shineFactor > 2){
+				shineFactor = 0;
+			}
 			//Draw the piece onto the board.
 			for(int col = 0; col < type.getDimension(); col++) {
 				for(int row = 0; row < type.getDimension(); row++) {
 					if(pieceRow + row >= 2 && type.isTile(col, row, rotation)) {
-						drawTile(type, (pieceCol + col) * TILE_SIZE, (pieceRow + row - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+						int iX = (pieceCol + col) * TILE_SIZE;
+						int iY = (pieceRow + row - HIDDEN_ROW_COUNT) * TILE_SIZE;
+						// Draw a shining block randomly
+						switch ((int)(Math.random() * 10)){
+							case 1:
+								drawTile(brighter(type.getBaseColor(), shineFactor),
+										 type.getLightColor(),
+										 type.getDarkColor(),
+										 iX,
+										 iY, g);
+								shineFactor++;
+								break;
+							default:
+								drawTile(type, iX, iY, g);
+						}
+
 					}
 				}
 			}
