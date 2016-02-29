@@ -124,6 +124,11 @@ public class Tetris extends JFrame {
          * The sound for the game
          */
         private SoundClip sTrack;
+        
+        /**
+         * Check whether the game is paused or not
+         */
+        private boolean bPaused;
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
@@ -224,6 +229,13 @@ public class Tetris extends JFrame {
 					 * minute or so.
 					 */
 					case KeyEvent.VK_P:
+                                            bPaused = !bPaused;
+                                            if(bPaused){
+                                                sTrack.stop();
+                                            }else{
+                                                sTrack.setLooping(true);
+                                                sTrack.play();
+                                            }
 						if(!isGameOver && !isNewGame) {
 							isPaused = !isPaused;
 							lLogicTimer.setPaused(isPaused);
@@ -307,6 +319,7 @@ public class Tetris extends JFrame {
 		this.fGameSpeed = 1.0f;
 		this.sBottom = new SoundClip("tileBottom.wav");
                 this.sTrack = new SoundClip("tetris.wav");
+                this.bPaused = false;
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
@@ -432,7 +445,9 @@ public class Tetris extends JFrame {
 		lLogicTimer.reset();
 		lLogicTimer.setCyclesPerSecond(fGameSpeed);
 		spawnPiece();
+                sTrack.setLooping(true);
                 sTrack.play();
+                sTrack.setLooping(true);
 	}
 
 	/**
