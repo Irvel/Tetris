@@ -120,6 +120,10 @@ public class Tetris extends JFrame {
 	 */
 	private SoundClip sBottom;
 		
+        /**
+         * The sound for the game
+         */
+        private SoundClip sTrack;
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
@@ -302,6 +306,7 @@ public class Tetris extends JFrame {
 		this.isNewGame = true;
 		this.fGameSpeed = 1.0f;
 		this.sBottom = new SoundClip("tileBottom.wav");
+                this.sTrack = new SoundClip("tetris.wav");
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
@@ -311,6 +316,8 @@ public class Tetris extends JFrame {
 		lLogicTimer.setPaused(true);
 		
 		while(true) {
+                
+                        
 			//Get the time that the frame started.
 			long start = System.nanoTime();
 			//Update the logic timer.
@@ -425,6 +432,7 @@ public class Tetris extends JFrame {
 		lLogicTimer.reset();
 		lLogicTimer.setCyclesPerSecond(fGameSpeed);
 		spawnPiece();
+                sTrack.play();
 	}
 
 	/**
