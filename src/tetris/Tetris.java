@@ -133,26 +133,181 @@ public class Tetris extends JFrame {
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
 	 */
+        
+        private void setBasicProperties(){
+		setLayout(new BorderLayout());
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setResizable(false);
+        }
+        
+        private void initBoardPanel(){
+            this.board = new BoardPanel(this);
+            this.side = new SidePanel(this);
+        }
+        
+        private void addInstancestoWindow(){
+            add(board, BorderLayout.CENTER);
+            add(side, BorderLayout.EAST);
+        }
+        
+        /*
+        * Drop - When pressed, we check to see that the game is not
+        * paused and that there is no drop cooldown, then set the
+	* logic timer to run at a speed of 25 cycles per second.    
+        */
+        private void goDown(){
+            if(!isPaused && iDropCooldown == 0){
+                lLogicTimer.setCyclesPerSecond(25.0f);
+            }
+        }
+        /*
+        * Move Left - When pressed, we check to see that the game is
+	* not paused and that the position to the left of the current
+	* position is valid. If so, we decrement the current column by 1.
+	*/        
+        private void moveLeft(){
+            if(!isPaused && board.isValidAndEmpty(tilCurrentType, iCurrentCol - 1, 
+                                                iCurrentRow, iCurrentRotation)) {
+                iCurrentCol--;
+            }
+        }
+        /*
+        * Move Right - When pressed, we check to see that the game is
+        * not paused and that the position to the right of the current
+        * position is valid. If so, we increment the current column by 1.
+	*/
+        private void moveRight(){
+            if(!isPaused && board.isValidAndEmpty(tilCurrentType, iCurrentCol + 1, 
+                                                iCurrentRow, iCurrentRotation)) {
+                iCurrentCol++;
+            }   
+        }
+        /*
+        * Rotate Anticlockwise - When pressed, check to see that the game is not paused
+        * and then attempt to rotate the piece anticlockwise. Because of the size and
+	* complexity of the rotation code, as well as it's similarity to clockwise
+        * rotation, the code for rotating the piece is handled in another method.
+	*/
+        private void rotateAntiClockwise(){
+            if(!isPaused){
+                rotatePiece((iCurrentRotation == 0) ? 3 : iCurrentRotation - 1);
+            }    
+        }
+        /*
+        * Rotate Clockwise - When pressed, check to see that the game is not paused
+        * and then attempt to rotate the piece clockwise. Because of the size and
+        * complexity of the rotation code, as well as it's similarity to anticlockwise
+        * rotation, the code for rotating the piece is handled in another method.
+	*/
+        private void rotateClockwise(){
+            if(!isPaused) {
+                rotatePiece((iCurrentRotation == 3) ? 0 : iCurrentRotation + 1);
+            }
+        }
+        /*
+        *Pause Game - When pressed, check to see that we're currently playing a game.
+        * If so, toggle the pause variable and update the logic timer to reflect this
+        * change, otherwise the game will execute a huge number of updates and essentially
+        * cause an instant game over when we unpause if we stay paused for more than a
+        * minute or so.
+	*/
+        private void pauseGame(){
+            bPaused = !bPaused;
+            if(bPaused){
+                sTrack.stop();
+            }else{
+                sTrack.setLooping(true);
+                sTrack.play();
+            }
+            if(!isGameOver && !isNewGame) {
+                isPaused = !isPaused;
+		lLogicTimer.setPaused(isPaused);
+            }
+        }
+        /*
+        * Start Game - When pressed, check to see that we're in either a game over or new
+        * game state. If so, reset the game.
+	*/
+        private void startAgain(){
+            if(isGameOver || isNewGame){
+		resetGame();
+            }          
+        }
+        /*
+        * Save Game - When pressed, check to see that we're currently playing a game.
+        * If so, save the game's current state.
+        */
+        private void save(){
+            if(!isGameOver && !isNewGame) {
+                saveGame(Tetris.this);
+            }   
+        }
+        /*
+        * Load Game - When pressed, reset the game and load a
+        * previous game state.
+        */
+        private void load(){
+            //resetGame();
+            loadGame(Tetris.this);
+            //Tetris.this.getBoard().setInstance(Tetris.this);
+            //Tetris.this.getSide().setInstance(Tetris.this);
+            lLogicTimer.reset();
+        }
+        private void keyAction(KeyEvent keyEvent){
+            switch (keyEvent.getKeyCode()){
+                case KeyEvent.VK_S:
+                    goDown();
+                    break;
+                case KeyEvent.VK_A:
+                    moveLeft();
+                    break;
+                case KeyEvent.VK_D:
+                    moveRight();
+                    break;
+                case KeyEvent.VK_Q:
+                    rotateAntiClockwise();
+                    break;
+                case KeyEvent.VK_E:
+                    rotateClockwise();
+                    break;
+                case KeyEvent.VK_P:
+                    pauseGame();
+                    break;
+                default:
+                    keyAction2(keyEvent);
+                    break;
+            }
+        }
+        
+        private void keyAction2(KeyEvent keyEvent){
+            switch (keyEvent.getKeyCode()){
+                case KeyEvent.VK_ENTER:
+                    startAgain();
+                    break;
+                case KeyEvent.VK_G:
+                    save();
+                    break;
+                case KeyEvent.VK_C:
+                    load();
+                    break;
+            }
+        }
 	private Tetris() {
 		/*
 		 * Set the basic properties of the window.
 		 */
-		super("Tetris");
-		setLayout(new BorderLayout());
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setResizable(false);
+                super("Tetris");
+		setBasicProperties();
 		
 		/*
 		 * Initialize the BoardPanel and SidePanel instances.
 		 */
-		this.board = new BoardPanel(this);
-		this.side = new SidePanel(this);
+		initBoardPanel();
 		
 		/*
 		 * Add the BoardPanel and SidePanel instances to the window.
 		 */
-		add(board, BorderLayout.CENTER);
-		add(side, BorderLayout.EAST);
+		addInstancestoWindow();
 		
 		/*
 		 * Adds a custom anonymous KeyListener to the frame.
@@ -161,121 +316,7 @@ public class Tetris extends JFrame {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-
-				switch(e.getKeyCode()) {
-				
-					/*
-					 * Drop - When pressed, we check to see that the game is not
-					 * paused and that there is no drop cooldown, then set the
-					 * logic timer to run at a speed of 25 cycles per second.
-					 */
-					case KeyEvent.VK_S:
-						if(!isPaused && iDropCooldown == 0) {
-							lLogicTimer.setCyclesPerSecond(25.0f);
-						}
-						break;
-
-					/*
-					 * Move Left - When pressed, we check to see that the game is
-					 * not paused and that the position to the left of the current
-					 * position is valid. If so, we decrement the current column by 1.
-					 */
-					case KeyEvent.VK_A:
-						if(!isPaused && board.isValidAndEmpty(tilCurrentType, iCurrentCol - 1, iCurrentRow, iCurrentRotation)) {
-							iCurrentCol--;
-						}
-						break;
-
-					/*
-					 * Move Right - When pressed, we check to see that the game is
-					 * not paused and that the position to the right of the current
-					 * position is valid. If so, we increment the current column by 1.
-					 */
-					case KeyEvent.VK_D:
-						if(!isPaused && board.isValidAndEmpty(tilCurrentType, iCurrentCol + 1, iCurrentRow, iCurrentRotation)) {
-							iCurrentCol++;
-						}
-						break;
-
-					/*
-					 * Rotate Anticlockwise - When pressed, check to see that the game is not paused
-					 * and then attempt to rotate the piece anticlockwise. Because of the size and
-					 * complexity of the rotation code, as well as it's similarity to clockwise
-					 * rotation, the code for rotating the piece is handled in another method.
-					 */
-					case KeyEvent.VK_Q:
-						if(!isPaused) {
-							rotatePiece((iCurrentRotation == 0) ? 3 : iCurrentRotation - 1);
-						}
-						break;
-
-					/*
-					 * Rotate Clockwise - When pressed, check to see that the game is not paused
-					 * and then attempt to rotate the piece clockwise. Because of the size and
-					 * complexity of the rotation code, as well as it's similarity to anticlockwise
-					 * rotation, the code for rotating the piece is handled in another method.
-					 */
-					case KeyEvent.VK_E:
-						if(!isPaused) {
-							rotatePiece((iCurrentRotation == 3) ? 0 : iCurrentRotation + 1);
-						}
-						break;
-
-					/*
-					 * Pause Game - When pressed, check to see that we're currently playing a game.
-					 * If so, toggle the pause variable and update the logic timer to reflect this
-					 * change, otherwise the game will execute a huge number of updates and essentially
-					 * cause an instant game over when we unpause if we stay paused for more than a
-					 * minute or so.
-					 */
-					case KeyEvent.VK_P:
-                                            bPaused = !bPaused;
-                                            if(bPaused){
-                                                sTrack.stop();
-                                            }else{
-                                                sTrack.setLooping(true);
-                                                sTrack.play();
-                                            }
-						if(!isGameOver && !isNewGame) {
-							isPaused = !isPaused;
-							lLogicTimer.setPaused(isPaused);
-						}
-						break;
-
-					/*
-					 * Start Game - When pressed, check to see that we're in either a game over or new
-					 * game state. If so, reset the game.
-					 */
-					case KeyEvent.VK_ENTER:
-						if(isGameOver || isNewGame) {
-							resetGame();
-						}
-						break;
-
-					/*
-				 	 * Save Game - When pressed, check to see that we're currently playing a game.
-				 	 * If so, save the game's current state.
-				 	 */
-					case KeyEvent.VK_G:
-						if(!isGameOver && !isNewGame) {
-							saveGame(Tetris.this);
-						}
-						break;
-
-					/*
-				 	 * Load Game - When pressed, reset the game and load a
-				 	 * previous game state.
-				 	 */
-					case KeyEvent.VK_C:
-						//resetGame();
-						loadGame(Tetris.this);
-						//Tetris.this.getBoard().setInstance(Tetris.this);
-						//Tetris.this.getSide().setInstance(Tetris.this);
-						lLogicTimer.reset();
-						break;
-
-				}
-
+				keyAction(e);
 			}
 			
 			@Override
@@ -527,6 +568,7 @@ public class Tetris extends JFrame {
 			iCurrentCol = newColumn;
 		}
 	}
+        
 	
 	/**
 	 * Checks to see whether or not the game is paused.
