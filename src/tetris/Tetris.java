@@ -517,6 +517,7 @@ public class Tetris extends JFrame {
 		 * because it means that the pieces on the board have gotten too high.
 		 */
 		if(!board.isValidAndEmpty(tilCurrentType, iCurrentCol, iCurrentRow, iCurrentRotation)) {
+                        sTrack.stop();
 			this.isGameOver = true;
 			lLogicTimer.setPaused(true);
 		}		
