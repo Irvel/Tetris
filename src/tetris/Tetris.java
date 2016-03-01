@@ -253,6 +253,11 @@ public class Tetris extends JFrame {
             //Tetris.this.getSide().setInstance(Tetris.this);
             lLogicTimer.reset();
         }
+        
+        /**
+	 * Sets the action based on the key pressed
+	 * @param keyEvent The key pressed
+	 */
         private void keyAction(KeyEvent keyEvent){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_S:
@@ -278,7 +283,10 @@ public class Tetris extends JFrame {
                     break;
             }
         }
-        
+        /**
+	 * Sets the action based on the key pressed
+	 * @param keyEvent The key pressed
+	 */
         private void keyAction2(KeyEvent keyEvent){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_ENTER:
@@ -291,6 +299,15 @@ public class Tetris extends JFrame {
                     load();
                     break;
             }
+        }
+        /*
+        * Here we resize the frame to hold the BoardPanel and SidePanel instances,
+	* center the window on the screen, and show it to the user.
+	*/
+        private void resize(){
+            pack();
+            setLocationRelativeTo(null);
+            setVisible(true);
         }
 	private Tetris() {
 		/*
@@ -315,15 +332,13 @@ public class Tetris extends JFrame {
 		addKeyListener(new KeyAdapter() {
 			
 			@Override
-			public void keyPressed(KeyEvent e) {
-				keyAction(e);
+			public void keyPressed(KeyEvent keyEvent) {
+				keyAction(keyEvent);
 			}
 			
 			@Override
-			public void keyReleased(KeyEvent e) {
-				
-				switch(e.getKeyCode()) {
-				
+			public void keyReleased(KeyEvent keyEvent) {
+				switch(keyEvent.getKeyCode()) {
 				/*
 				 * Drop - When released, we set the speed of the logic timer
 				 * back to whatever the current game speed is and clear out
@@ -333,19 +348,10 @@ public class Tetris extends JFrame {
 					lLogicTimer.setCyclesPerSecond(fGameSpeed);
 					lLogicTimer.reset();
 					break;
-				}
-				
-			}
-			
+				}	
+                        }
 		});
-		
-		/*
-		 * Here we resize the frame to hold the BoardPanel and SidePanel instances,
-		 * center the window on the screen, and show it to the user.
-		 */
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
+		resize();
 	}
 
 	/**

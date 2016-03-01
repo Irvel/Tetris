@@ -29,7 +29,7 @@ public class StateHandler {
         catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Finished writing stuff");
+        //System.out.println("Finished writing stuff");
     }
 
     /**
