@@ -22,38 +22,38 @@ public class BoardPanel extends JPanel {
 	 * Minimum color component values for tiles. This is required if we
 	 * want to show both light and dark shading on our tiles.
 	 */
-	public static final int ICOLOR_MIN = 35;
+	public static final int iCOLOR_MIN = 35;
 	
 	/**
 	 * Maximum color component values for tiles. This is required if we
 	 * want to show both light and dark shading on our tiles.
 	 */
-	public static final int ICOLOR_MAX = 255 - ICOLOR_MIN;
+	public static final int iCOLOR_MAX = 255 - iCOLOR_MIN;
 	
 	/**
 	 * The width of the border around the game board.
 	 */
-	private static final int IBORDER_WIDTH = 5;
+	private static final int iBORDER_WIDTH = 5;
 	
 	/**
 	 * The number of columns on the board.
 	 */
-	public static final int ICOL_COUNT = 10;
+	public static final int iCOL_COUNT = 10;
 		
 	/**
 	 * The number of visible rows on the board.
 	 */
-	private static final int IVISIBLE_ROW_COUNT = 20;
+	private static final int iVISIBLE_ROW_COUNT = 20;
 	
 	/**
 	 * The number of rows that are hidden from view.
 	 */
-	private static final int IHIDDEN_ROW_COUNT = 2;
+	private static final int iHIDDEN_ROW_COUNT = 2;
 	
 	/**
 	 * The total number of rows that the board contains.
 	 */
-	public static final int IROW_COUNT = IVISIBLE_ROW_COUNT + IHIDDEN_ROW_COUNT;
+	public static final int iROW_COUNT = iVISIBLE_ROW_COUNT + iHIDDEN_ROW_COUNT;
 	
 	/**
 	 * The number of pixels that a tile takes up.
@@ -73,22 +73,22 @@ public class BoardPanel extends JPanel {
 	/**
 	 * The central x coordinate on the game board.
 	 */
-	private static final int ICENTER_X = ICOL_COUNT * ITILE_SIZE / 2;
+	private static final int ICENTER_X = iCOL_COUNT * ITILE_SIZE / 2;
 	
 	/**
 	 * The central y coordinate on the game board.
 	 */
-	private static final int ICENTER_Y = IVISIBLE_ROW_COUNT * ITILE_SIZE / 2;
+	private static final int ICENTER_Y = iVISIBLE_ROW_COUNT * ITILE_SIZE / 2;
 		
 	/**
 	 * The total width of the panel.
 	 */
-	public static final int IPANEL_WIDTH = ICOL_COUNT * ITILE_SIZE + IBORDER_WIDTH * 2;
+	public static final int IPANEL_WIDTH = iCOL_COUNT * ITILE_SIZE + iBORDER_WIDTH * 2;
 	
 	/**
 	 * The total height of the panel.
 	 */
-	public static final int PANEL_HEIGHT = IVISIBLE_ROW_COUNT * ITILE_SIZE + IBORDER_WIDTH * 2;
+	public static final int PANEL_HEIGHT = iVISIBLE_ROW_COUNT * ITILE_SIZE + iBORDER_WIDTH * 2;
 	
 	/**
 	 * The larger font to display.
@@ -142,7 +142,7 @@ public class BoardPanel extends JPanel {
 	 */
 	public BoardPanel(Tetris tetTris) {
 		this.tetTris = tetTris;
-		this.tilTile = new TileType[IROW_COUNT][ICOL_COUNT];
+		this.tilTile = new TileType[iROW_COUNT][iCOL_COUNT];
 		this.fAlphaAmount = 0.1f;
 		this.fAlphaFactor = 0.01f;
 		this.iGradientModifier = 0;
@@ -159,8 +159,8 @@ public class BoardPanel extends JPanel {
 		 * Loop through every tile index and set it's value
 		 * to null to clear the board.
 		 */
-		for(int i = 0; i < IROW_COUNT; i++) {
-			for(int j = 0; j < ICOL_COUNT; j++) {
+		for(int i = 0; i < iROW_COUNT; i++) {
+			for(int j = 0; j < iCOL_COUNT; j++) {
 				tilTile[i][j] = null;
 			}
 		}
@@ -177,12 +177,12 @@ public class BoardPanel extends JPanel {
 	public boolean isValidAndEmpty(TileType type, int x, int y, int rotation) {
 				
 		//Ensure the piece is in a valid column.
-		if(x < -type.getLeftInset(rotation) || x + type.getDimension() - type.getRightInset(rotation) >= ICOL_COUNT) {
+		if(x < -type.getLeftInset(rotation) || x + type.getDimension() - type.getRightInset(rotation) >= iCOL_COUNT) {
 			return false;
 		}
 		
 		//Ensure the piece is in a valid row.
-		if(y < -type.getTopInset(rotation) || y + type.getDimension() - type.getBottomInset(rotation) >= IROW_COUNT) {
+		if(y < -type.getTopInset(rotation) || y + type.getDimension() - type.getBottomInset(rotation) >= iROW_COUNT) {
 			return false;
 		}
 		
@@ -241,7 +241,7 @@ public class BoardPanel extends JPanel {
 		 * The checkLine function handles clearing the line and
 		 * shifting the rest of the board down for us.
 		 */
-		for(int row = 0; row < IROW_COUNT; row++) {
+		for(int row = 0; row < iROW_COUNT; row++) {
 			if(checkLine(row)) {
 				completedLines++;
 			}
@@ -259,7 +259,7 @@ public class BoardPanel extends JPanel {
 		 * Iterate through every column in this row. If any of them are
 		 * empty, then the row is not full.
 		 */
-		for(int col = 0; col < ICOL_COUNT; col++) {
+		for(int col = 0; col < iCOL_COUNT; col++) {
 			if(!isOccupied(col, line)) {
 				return false;
 			}
@@ -270,7 +270,7 @@ public class BoardPanel extends JPanel {
 		 * To do this, we simply shift every row above it down by one.
 		 */
 		for(int row = line - 1; row >= 0; row--) {
-			for(int col = 0; col < ICOL_COUNT; col++) {
+			for(int col = 0; col < iCOL_COUNT; col++) {
 				setTile(col, row + 1, getTile(col, row));
 			}
 		}
@@ -362,7 +362,7 @@ public class BoardPanel extends JPanel {
                 setBackground(iImage,g);
                 g.drawImage(imgBackground,0,0,this);
 		//This helps simplify the positioning of things.
-		g.translate(IBORDER_WIDTH, IBORDER_WIDTH);
+		g.translate(iBORDER_WIDTH, iBORDER_WIDTH);
 		
 		/*
 		 * Draw the board differently depending on the current game state.
@@ -391,11 +391,11 @@ public class BoardPanel extends JPanel {
 			/*
 			 * Draw the tiles onto the board.
 			 */
-			for(int x = 0; x < ICOL_COUNT; x++) {
-				for(int y = IHIDDEN_ROW_COUNT; y < IROW_COUNT; y++) {
+			for(int x = 0; x < iCOL_COUNT; x++) {
+				for(int y = iHIDDEN_ROW_COUNT; y < iROW_COUNT; y++) {
 					TileType tile = getTile(x, y);
 					if(tile != null) {
-						drawTile(tile, x * ITILE_SIZE, (y - IHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
+						drawTile(tile, x * ITILE_SIZE, (y - iHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
 					}
 				}
 			}
@@ -423,7 +423,7 @@ public class BoardPanel extends JPanel {
 				for(int row = 0; row < type.getDimension(); row++) {
 					if(pieceRow + row >= 2 && type.isTile(col, row, rotation)) {
 						int iX = (pieceCol + col) * ITILE_SIZE;
-						int iY = (pieceRow + row - IHIDDEN_ROW_COUNT) * ITILE_SIZE;
+						int iY = (pieceRow + row - iHIDDEN_ROW_COUNT) * ITILE_SIZE;
 						// Draw base block
 						drawTile(type, iX, iY, g);
 
@@ -448,7 +448,7 @@ public class BoardPanel extends JPanel {
 			 */
 			Color base = type.getBaseColor();
 			base = new Color(base.getRed(), base.getGreen(), base.getBlue(), 20);
-			for(int lowest = pieceRow; lowest < IROW_COUNT; lowest++) {
+			for(int lowest = pieceRow; lowest < iROW_COUNT; lowest++) {
 				//If no collision is detected, try the next row.
 				if(isValidAndEmpty(type, pieceCol, lowest, rotation)) {					
 					continue;
@@ -461,7 +461,7 @@ public class BoardPanel extends JPanel {
 				for(int col = 0; col < type.getDimension(); col++) {
 					for(int row = 0; row < type.getDimension(); row++) {
 						if(lowest + row >= 2 && type.isTile(col, row, rotation)) {
-							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * ITILE_SIZE, (lowest + row - IHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
+							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * ITILE_SIZE, (lowest + row - iHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
 						}
 					}
 				}
@@ -474,10 +474,10 @@ public class BoardPanel extends JPanel {
 			 * for players, and makes the pieces look nicer by breaking them up.
 			 */
 			g.setColor(Color.DARK_GRAY);
-			for(int x = 0; x < ICOL_COUNT; x++) {
-				for(int y = 0; y < IVISIBLE_ROW_COUNT; y++) {
-					g.drawLine(0, y * ITILE_SIZE, ICOL_COUNT * ITILE_SIZE, y * ITILE_SIZE);
-					g.drawLine(x * ITILE_SIZE, 0, x * ITILE_SIZE, IVISIBLE_ROW_COUNT * ITILE_SIZE);
+			for(int x = 0; x < iCOL_COUNT; x++) {
+				for(int y = 0; y < iVISIBLE_ROW_COUNT; y++) {
+					g.drawLine(0, y * ITILE_SIZE, iCOL_COUNT * ITILE_SIZE, y * ITILE_SIZE);
+					g.drawLine(x * ITILE_SIZE, 0, x * ITILE_SIZE, iVISIBLE_ROW_COUNT * ITILE_SIZE);
 				}
 			}
 		}
@@ -486,7 +486,7 @@ public class BoardPanel extends JPanel {
 		 * Draw the outline.
 		 */
 		g.setColor(Color.WHITE);
-		g.drawRect(0, 0, ITILE_SIZE * ICOL_COUNT, ITILE_SIZE * IVISIBLE_ROW_COUNT);
+		g.drawRect(0, 0, ITILE_SIZE * iCOL_COUNT, ITILE_SIZE * iVISIBLE_ROW_COUNT);
 	}
 	
 	/**
