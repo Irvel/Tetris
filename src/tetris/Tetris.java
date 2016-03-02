@@ -12,7 +12,8 @@ import static tetris.StateHandler.saveGame;
 /**
  * The {@code Tetris} class is responsible for handling much of the game logic and
  * reading user input.
- * @author Brendan Jones
+ * @author Irvel Nduva
+ * @author Jorge Vázquez
  *
  */
 public class Tetris extends JFrame {
