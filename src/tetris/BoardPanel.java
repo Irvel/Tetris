@@ -427,7 +427,7 @@ public class BoardPanel extends JPanel {
 						drawTile(type, iX, iY, g);
 
 						// Draw glow
-						drawTileAlpha(type.getLightColor().brighter(),
+						drawTileAlpha(type.getLightColor().brighter().brighter(),
 									  type.getBaseColor(),
 									  iX,
 									  iY,

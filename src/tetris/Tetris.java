@@ -213,6 +213,7 @@ public class Tetris extends JFrame {
         * minute or so.
 	*/
         private void pauseGame(){
+
             bPaused = !bPaused;
             if(bPaused){
                 sTrack.stop();
@@ -431,6 +432,7 @@ public class Tetris extends JFrame {
 			 */
 			board.addPiece(tilCurrentType, iCurrentCol, iCurrentRow, iCurrentRotation);
 			sBottom.play();
+
 			
 			/*
 			 * Check to see if adding the new piece resulted in any cleared lines. If so,
