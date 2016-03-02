@@ -2,6 +2,7 @@ package tetris;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 /**
  * The {@code BoardPanel} class is responsible for displaying the game grid and
@@ -57,6 +58,11 @@ public class BoardPanel extends JPanel {
 	 * The number of pixels that a tile takes up.
 	 */
 	public static final int ITILE_SIZE = 24;
+
+	/**
+	 * The number of extra pixels that the glow of a tile takes up.
+	 */
+	public static final int IGLOW_OFFSET = 1;
 	
 	/**
 	 * The width of the shading on the tiles.
@@ -104,11 +110,22 @@ public class BoardPanel extends JPanel {
 	private TileType[][] tilTile;
 
 	/**
-	 * The current amount of brightness a piece is being drawn with to
-	 * animate a
-	 * "shining" effect.
+	 * The current amount of alpha a tile is being drawn with in order to
+	 * animate a "shining" effect.
 	 */
-	private int shineFactor;
+	private float fAlphaAmount;
+
+	/**
+	 * How much is the current alpha being modified with the drawing of each
+	 * tile.
+	 */
+	private float fAlphaFactor;
+
+	/**
+	 * The level of displacement from the gradient center to animate motion.
+	 */
+	private float iGradientModifier;
+
 
 	/**
 	 * Crates a new GameBoard instance.
@@ -117,7 +134,9 @@ public class BoardPanel extends JPanel {
 	public BoardPanel(Tetris tetTris) {
 		this.tetTris = tetTris;
 		this.tilTile = new TileType[IROW_COUNT][ICOL_COUNT];
-		this.shineFactor = 0;
+		this.fAlphaAmount = 0.1f;
+		this.fAlphaFactor = 0.01f;
+		this.iGradientModifier = 0;
 		setPreferredSize(new Dimension(IPANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 	}
@@ -313,7 +332,7 @@ public class BoardPanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
+
 		//This helps simplify the positioning of things.
 		g.translate(IBORDER_WIDTH, IBORDER_WIDTH);
 		
@@ -364,32 +383,32 @@ public class BoardPanel extends JPanel {
 			int pieceRow = tetTris.getPieceRow();
 			int rotation = tetTris.getPieceRotation();
 			/*
-			 * Limit the amount of brightness a piece can be drawn with to
-			 * animate a "shining" effect.
+			 * When the alpha has reched the maximum value, start decreasing
+			 * it and viceversa.
 			 */
-			if(shineFactor > 2){
-				shineFactor = 0;
+			if(fAlphaAmount >= 0.8f || fAlphaAmount <= 0.09f){
+				fAlphaFactor *= -1;
 			}
+
 			//Draw the piece onto the board.
 			for(int col = 0; col < type.getDimension(); col++) {
 				for(int row = 0; row < type.getDimension(); row++) {
 					if(pieceRow + row >= 2 && type.isTile(col, row, rotation)) {
 						int iX = (pieceCol + col) * ITILE_SIZE;
 						int iY = (pieceRow + row - IHIDDEN_ROW_COUNT) * ITILE_SIZE;
-						// Draw a shining block randomly
-						switch ((int)(Math.random() * 10)){
-							case 1:
-								drawTile(brighter(type.getBaseColor(), shineFactor),
-										 type.getLightColor(),
-										 type.getDarkColor(),
-										 iX,
-										 iY, g);
-								shineFactor++;
-								break;
-							default:
-								drawTile(type, iX, iY, g);
-						}
+						// Draw base block
+						drawTile(type, iX, iY, g);
 
+						// Draw glow
+						drawTileAlpha(type.getLightColor().brighter(),
+									  type.getBaseColor(),
+									  iX,
+									  iY,
+									  g,
+									  fAlphaAmount);
+
+						// Increase the amount of alpha to be drawn
+						fAlphaAmount += fAlphaFactor;
 					}
 				}
 			}
@@ -463,7 +482,6 @@ public class BoardPanel extends JPanel {
 	 * @param g The graphics object.
 	 */
 	private void drawTile(Color base, Color light, Color dark, int x, int y, Graphics g) {
-		
 		/*
 		 * Fill the entire tile with the base color.
 		 */
@@ -474,11 +492,14 @@ public class BoardPanel extends JPanel {
 		 * Fill the bottom and right edges of the tile with the dark shading color.
 		 */
 		g.setColor(dark);
-		g.fillRect(x, y + ITILE_SIZE - ISHADE_WIDTH, ITILE_SIZE, ISHADE_WIDTH);
-		g.fillRect(x + ITILE_SIZE - ISHADE_WIDTH, y, ISHADE_WIDTH, ITILE_SIZE);
+		g.fillRect(x, y + ITILE_SIZE - ISHADE_WIDTH, ITILE_SIZE,
+					 ISHADE_WIDTH);
+		g.fillRect(x + ITILE_SIZE - ISHADE_WIDTH, y, ISHADE_WIDTH,
+					 ITILE_SIZE);
 		
 		/*
-		 * Fill the top and left edges with the light shading. We draw a single line
+		 * Fill the top and left edges with the light shading. We draw a
+		 * single line
 		 * for each row or column rather than a rectangle so that we can draw a nice
 		 * looking diagonal where the light and dark shading meet.
 		 */
@@ -487,6 +508,54 @@ public class BoardPanel extends JPanel {
 			g.drawLine(x, y + i, x + ITILE_SIZE - i - 1, y + i);
 			g.drawLine(x + i, y, x + i, y + ITILE_SIZE - i - 1);
 		}
+	}
+
+	/**
+	 * Draws a tile onto the board.
+	 * @param base The base color of tile.
+	 * @param dark The dark color of the tile.
+	 * @param x The column.
+	 * @param y The row.
+	 * @param g The graphics object.
+	 */
+	private void drawTileAlpha(Color base, Color dark, int x,
+							   int y, Graphics g, float fAlphaValue) {
+		/*
+		 * Create a new Graphics2D instance to allow alpha to be drawn into
+		 * the object. Then save the current composite to restore normal
+		 * non-alpha painting.
+		 */
+		Graphics2D g2d = (Graphics2D) g;
+		Composite cCurrentComposite = g2d.getComposite();
+		/*
+		 * Create a radial gradient with the light and dark colors to give the
+		 * tile a more dynamic look. The increasing iGradientModifier gives the
+		  * effect of the tile shining
+		 */
+		Point2D center = new Point2D.Float(x/2 + iGradientModifier, y/2);
+		iGradientModifier+= .1;
+		float radius = 10;
+		float[] dist = {0.05f, .95f};
+		Color[] colors = {base.brighter(), dark};
+		RadialGradientPaint paint =
+				new RadialGradientPaint(center,
+										radius,
+										dist,
+										colors,
+										MultipleGradientPaint.CycleMethod.REFLECT);
+
+		/*
+		 * Fill the entire tile with the light and dark colors gradient.
+		 */
+		g2d.setComposite(AlphaComposite.getInstance(
+				AlphaComposite.SRC_OVER, fAlphaValue));
+		g2d.setPaint(paint);
+		g2d.fillRect(x - IGLOW_OFFSET,
+					 y - IGLOW_OFFSET,
+					 ITILE_SIZE + IGLOW_OFFSET * 2,
+					 ITILE_SIZE + IGLOW_OFFSET * 2);
+
+		g2d.setComposite(cCurrentComposite);
 	}
 
 }
