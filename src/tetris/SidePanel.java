@@ -75,17 +75,19 @@ public class SidePanel extends JPanel {
 	/**
 	 * The small font.
 	 */
-	private static final Font FSMALL_FONT = new Font("Helvetica", Font.BOLD, 11);
+	private static final Font FSMALL_FONT = new Font("Dialog", Font
+			.BOLD, 11);
 	
 	/**
 	 * The large font.
 	 */
-	private static final Font FLARGE_FONT = new Font("Helvetica", Font.BOLD, 13);
+	private static final Font FLARGE_FONT = new Font("Dialog", Font.BOLD,
+													 13);
 	
 	/**
 	 * The color to draw the text and preview box in.
 	 */
-	private static final Color CDRAW_COLOR = new Color(128, 192, 128);
+	private static final Color CDRAW_COLOR = new Color(173, 255, 255);
 	
 	/**
 	 * The Tetris instance.
@@ -94,7 +96,7 @@ public class SidePanel extends JPanel {
 	
 	/**
 	 * Creates a new SidePanel and sets it's display properties.
-	 * @param tetris The Tetris instance to use.
+	 * @param tetTetris The Tetris instance to use.
 	 */
 	public SidePanel(Tetris tetTetris) {
 		this.tetTetris = tetTetris;
@@ -140,6 +142,8 @@ public class SidePanel extends JPanel {
 		g.drawString("P - Pause Game", ILARGE_INSET, offset += ITEXT_STRIDE);
 		g.drawString("G - Save Game", ILARGE_INSET, offset += ITEXT_STRIDE);
 		g.drawString("C - Load Game", ILARGE_INSET, offset += ITEXT_STRIDE);
+		g.drawString("T - Stop/Start Track", ILARGE_INSET, offset +=
+				ITEXT_STRIDE);
 
 		/*
 		 * Draw the next piece preview box.
