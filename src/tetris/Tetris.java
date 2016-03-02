@@ -124,6 +124,10 @@ public class Tetris extends JFrame {
          * The second sound for each time a tile falls to the bottom.
          */
         private SoundClip sBottom2;
+        /**
+         * The sound to play when the game is over
+         */
+        private SoundClip sOver;
 	/**
 	 * The sound for the game
 	 */
@@ -137,6 +141,10 @@ public class Tetris extends JFrame {
          * Auxiliar variable to know which sound to play
          */
         private int iAux;
+        /**
+         * Boolean to check if the theme track is played
+         */
+        private boolean bCheck;
         
 	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
@@ -152,6 +160,10 @@ public class Tetris extends JFrame {
         private void initBoardPanel(){
             this.board = new BoardPanel(this);
             this.side = new SidePanel(this);
+            /**
+            * Set the background image to black
+            **/
+            board.whichImage(0);
         }
         
         private void addInstancestoWindow(){
@@ -224,13 +236,15 @@ public class Tetris extends JFrame {
             bPaused = !bPaused;
             if(bPaused){
                 sTrack.stop();
+                board.whichImage(0);
             }else{
+                board.whichImage(1);
                 sTrack.setLooping(true);
                 sTrack.play();
             }
             if(!isGameOver && !isNewGame) {
                 isPaused = !isPaused;
-				lLogicTimer.setPaused(isPaused);
+		lLogicTimer.setPaused(isPaused);
             }
         }
         /*
@@ -239,6 +253,7 @@ public class Tetris extends JFrame {
 	*/
         private void startAgain(){
             if(isGameOver || isNewGame){
+                
 		resetGame();
             }          
         }
@@ -261,6 +276,20 @@ public class Tetris extends JFrame {
             //Tetris.this.getBoard().setInstance(Tetris.this);
             //Tetris.this.getSide().setInstance(Tetris.this);
             lLogicTimer.reset();
+        }
+        /**
+         * 
+         * stopTrack() - When pressed, the theme track is paused
+         * or played
+         */
+        private void stopTrack(){
+            if (bCheck){
+                sTrack.stop();
+                bCheck = false;
+            }else{
+                sTrack.setLooping(true);
+                sTrack.play();
+            }
         }
         
         /**
@@ -307,6 +336,11 @@ public class Tetris extends JFrame {
                 case KeyEvent.VK_C:
                     load();
                     break;
+                case KeyEvent.VK_T:
+                    stopTrack();
+                    break;
+                default:
+                    break;
             }
         }
         /*
@@ -319,12 +353,12 @@ public class Tetris extends JFrame {
             setVisible(true);
         }
 	private Tetris() {
+           
 		/*
 		 * Set the basic properties of the window.
 		 */
                 super("Tetris");
 		setBasicProperties();
-		
 		/*
 		 * Initialize the BoardPanel and SidePanel instances.
 		 */
@@ -375,9 +409,11 @@ public class Tetris extends JFrame {
 		this.fGameSpeed = 1.0f;
 		this.sBottom = new SoundClip("zap1.wav");
                 this.sBottom2 = new SoundClip("zap2.wav");
+                this.sOver = new SoundClip("over.wav");
 		this.sTrack = new SoundClip("tetris.wav");
                 this.iAux = 1;
 		this.bPaused = false;
+                this.bCheck = true;
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
@@ -512,6 +548,7 @@ public class Tetris extends JFrame {
 		sTrack.setLooping(true);
 		sTrack.play();
 		sTrack.setLooping(true);
+                board.whichImage(1);
 	}
 
 	/**
@@ -534,8 +571,12 @@ public class Tetris extends JFrame {
 		 * because it means that the pieces on the board have gotten too high.
 		 */
 		if(!board.isValidAndEmpty(tilCurrentType, iCurrentCol, iCurrentRow, iCurrentRotation)) {
+                        sBottom.stop();
+                        sBottom2.stop();
                         sTrack.stop();
+                        sOver.play();
 			this.isGameOver = true;
+                        board.whichImage(0);
 			lLogicTimer.setPaused(true);
 		}		
 	}

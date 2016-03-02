@@ -91,6 +91,11 @@ public class SidePanel extends JPanel {
 	 * The Tetris instance.
 	 */
 	private Tetris tetTetris;
+        
+        /**
+         * Background image
+         */
+        private Image imgBackground;
 	
 	/**
 	 * Creates a new SidePanel and sets it's display properties.
@@ -106,7 +111,6 @@ public class SidePanel extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
 		//Set the color for drawing.
 		g.setColor(CDRAW_COLOR);
 		

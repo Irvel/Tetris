@@ -3,6 +3,7 @@ package tetris;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.net.URL;
 
 /**
  * The {@code BoardPanel} class is responsible for displaying the game grid and
@@ -125,8 +126,16 @@ public class BoardPanel extends JPanel {
 	 * The level of displacement from the gradient center to animate motion.
 	 */
 	private float iGradientModifier;
+        /**
+         * 
+         */
+        private Image imgBackground;
+        /**
+         * Integer to chose which image to paint
+         */
+        private int iImage;
 
-
+        
 	/**
 	 * Crates a new GameBoard instance.
 	 * @param tetTris The Tetris instance to use.
@@ -137,6 +146,7 @@ public class BoardPanel extends JPanel {
 		this.fAlphaAmount = 0.1f;
 		this.fAlphaFactor = 0.01f;
 		this.iGradientModifier = 0;
+                iImage = 1;
 		setPreferredSize(new Dimension(IPANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 	}
@@ -328,11 +338,29 @@ public class BoardPanel extends JPanel {
 		}
 		return color;
 	}
+        
+        public void whichImage(int iImage){
+            this.iImage = iImage;
+        }
+        
+        private void setBackground(int iImage, Graphics g){
+            URL urlImagen;
+            this.iImage = iImage;
+            if (iImage == 1){
+                urlImagen = this.getClass().getResource("background.jpg");
+            }else{
+                urlImagen = this.getClass().getResource("black.png");
+            }
+            imgBackground = Toolkit.getDefaultToolkit().getImage(urlImagen);
+            g.drawImage(imgBackground,0,0,this);
+        }
 	
+        
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+                setBackground(iImage,g);
+                g.drawImage(imgBackground,0,0,this);
 		//This helps simplify the positioning of things.
 		g.translate(IBORDER_WIDTH, IBORDER_WIDTH);
 		
