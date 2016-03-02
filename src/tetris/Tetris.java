@@ -147,6 +147,11 @@ public class Tetris extends JFrame {
         private boolean bCheck;
         
 	/**
+	 * The shaker helper object for the frame
+	 */
+	private ShakeFrame shaShaker;
+
+	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
 	 */
@@ -233,6 +238,7 @@ public class Tetris extends JFrame {
         * minute or so.
 	*/
         private void pauseGame(){
+
             bPaused = !bPaused;
             if(bPaused){
                 sTrack.stop();
@@ -413,8 +419,9 @@ public class Tetris extends JFrame {
 		this.sTrack = new SoundClip("tetris.wav");
                 this.iAux = 1;
 		this.bPaused = false;
-                this.bCheck = true;
-		
+		this.bCheck = true;
+		this.shaShaker = new ShakeFrame(this);
+
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
 		 * to start it.
@@ -476,14 +483,14 @@ public class Tetris extends JFrame {
 			 * we need to add the piece to the board.
 			 */
 			board.addPiece(tilCurrentType, iCurrentCol, iCurrentRow, iCurrentRotation);
-                        if (iAux == 1){
-                            sBottom.play();
-                            iAux = 0;
-                        }else{
-                            sBottom2.play();
-                            iAux = 1;
-                        }
-			
+			if (iAux == 1){
+				sBottom.play();
+				iAux = 0;
+			}else{
+				sBottom2.play();
+				iAux = 1;
+			}
+
 			/*
 			 * Check to see if adding the new piece resulted in any cleared lines. If so,
 			 * increase the player's score. (Up to 4 lines can be cleared in a single go;
@@ -492,6 +499,7 @@ public class Tetris extends JFrame {
 			int cleared = board.checkLines();
 			if(cleared > 0) {
 				iScore += 50 << cleared;
+				shaShaker.startShaking();
 			}
 			
 			/*
@@ -609,8 +617,10 @@ public class Tetris extends JFrame {
 		 */
 		if(iCurrentCol < -left) {
 			newColumn -= iCurrentCol - left;
-		} else if(iCurrentCol + tilCurrentType.getDimension() - right >= BoardPanel.ICOL_COUNT) {
-			newColumn -= (iCurrentCol + tilCurrentType.getDimension() - right) - BoardPanel.ICOL_COUNT + 1;
+		} else if(iCurrentCol + tilCurrentType.getDimension() - right >=
+				BoardPanel.iCOL_COUNT) {
+			newColumn -= (iCurrentCol + tilCurrentType.getDimension() -
+					right) - BoardPanel.iCOL_COUNT + 1;
 		}
 		
 		/*
@@ -619,8 +629,10 @@ public class Tetris extends JFrame {
 		 */
 		if(iCurrentRow < -top) {
 			newRow -= iCurrentRow - top;
-		} else if(iCurrentRow + tilCurrentType.getDimension() - bottom >= BoardPanel.IROW_COUNT) {
-			newRow -= (iCurrentRow + tilCurrentType.getDimension() - bottom) - BoardPanel.IROW_COUNT + 1;
+		} else if(iCurrentRow + tilCurrentType.getDimension() - bottom >=
+				BoardPanel.iROW_COUNT) {
+			newRow -= (iCurrentRow + tilCurrentType.getDimension() - bottom)
+					- BoardPanel.iROW_COUNT + 1;
 		}
 		
 		/*
