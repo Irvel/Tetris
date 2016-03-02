@@ -92,12 +92,17 @@ public class BoardPanel extends JPanel {
 	/**
 	 * The larger font to display.
 	 */
-	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 16);
+	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 44);
+
+	/**
+	 * The medium-sized font to display.
+	 */
+	private static final Font MEDIUM_FONT = new Font("Tahoma", Font.BOLD, 28);
 
 	/**
 	 * The smaller font to display.
 	 */
-	private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+	private static final Font SMALL_FONT = new Font("Tahoma", Font.PLAIN, 14);
 	
 	/**
 	 * The Tetris instance.
@@ -340,11 +345,23 @@ public class BoardPanel extends JPanel {
 		 * Draw the board differently depending on the current game state.
 		 */
 		if(tetTris.isPaused()) {
-			g.setFont(LARGE_FONT);
-			g.setColor(Color.WHITE);
+			g.setFont(MEDIUM_FONT);
 			String msg = "PAUSED";
+			/*
+			 * Draw a light gray shadow before the main text
+			 */
+			g.setColor(Color.LIGHT_GRAY);
+			g.drawString(msg,
+						 ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
+						 ICENTER_Y + 2);
+
+			/*
+			 * Draw the main text
+			 */
+			g.setColor(Color.WHITE);
 			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, ICENTER_Y);
-		} else if(tetTris.isNewGame() || tetTris.isGameOver()) {
+		}
+		else if(tetTris.isNewGame() || tetTris.isGameOver()) {
 			g.setFont(LARGE_FONT);
 			g.setColor(Color.WHITE);
 			
@@ -354,12 +371,22 @@ public class BoardPanel extends JPanel {
 			 * the messages that are displayed.
 			 */
 			String msg = tetTris.isNewGame() ? "TETRIS" : "GAME OVER";
+			/*
+			 * Draw a light gray shadow before the main text
+			 */
+			g.setColor(Color.LIGHT_GRAY);
+			g.drawString(msg,
+						 ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
+						 150 + 2);
+			/*
+			 * Draw the main text
+			 */
+			g.setColor(Color.WHITE);
 			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
 			g.setFont(SMALL_FONT);
 			msg = "Press Enter to Play" + (tetTris.isNewGame() ? "" : " Again");
 			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
 		} else {
-			
 			/*
 			 * Draw the tiles onto the board.
 			 */

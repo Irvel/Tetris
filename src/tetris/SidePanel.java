@@ -60,12 +60,12 @@ public class SidePanel extends JPanel {
 	/**
 	 * The y coordinate of the stats category.
 	 */
-	private static final int ISTATS_INSET = 175;
+	private static final int ISTATS_INSET = 140;
 	
 	/**
 	 * The y coordinate of the controls category.
 	 */
-	private static final int ICONTROLS_INSET = 270;
+	private static final int ICONTROLS_INSET = 240;
 	
 	/**
 	 * The number of pixels to offset between each string.
