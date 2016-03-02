@@ -131,6 +131,11 @@ public class Tetris extends JFrame {
 	private boolean bPaused;
 
 	/**
+	 * The shaker helper object for the frame
+	 */
+	private ShakeFrame shaShaker;
+
+	/**
 	 * Creates a new Tetris instance. Sets up the window's properties,
 	 * and adds a controller listener.
 	 */
@@ -369,6 +374,7 @@ public class Tetris extends JFrame {
 		this.sBottom = new SoundClip("tileBottom.wav");
 		this.sTrack = new SoundClip("tetris.wav");
 		this.bPaused = false;
+		this.shaShaker = new ShakeFrame(this);
 		
 		/*
 		 * Setup the timer to keep the game from running before the user presses enter
@@ -442,6 +448,7 @@ public class Tetris extends JFrame {
 			int cleared = board.checkLines();
 			if(cleared > 0) {
 				iScore += 50 << cleared;
+				shaShaker.startShaking();
 			}
 			
 			/*
