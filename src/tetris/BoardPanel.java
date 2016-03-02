@@ -14,74 +14,74 @@ public class BoardPanel extends JPanel {
 	/**
 	 * Serial Version UID.
 	 */
-	private static final long serialVersionUID = 5055679736784226108L;
+	private static final long lSERIALVERSIONUID = 5055679736784226108L;
 
 	/**
 	 * Minimum color component values for tiles. This is required if we
 	 * want to show both light and dark shading on our tiles.
 	 */
-	public static final int COLOR_MIN = 35;
+	public static final int ICOLOR_MIN = 35;
 	
 	/**
 	 * Maximum color component values for tiles. This is required if we
 	 * want to show both light and dark shading on our tiles.
 	 */
-	public static final int COLOR_MAX = 255 - COLOR_MIN;
+	public static final int ICOLOR_MAX = 255 - ICOLOR_MIN;
 	
 	/**
 	 * The width of the border around the game board.
 	 */
-	private static final int BORDER_WIDTH = 5;
+	private static final int IBORDER_WIDTH = 5;
 	
 	/**
 	 * The number of columns on the board.
 	 */
-	public static final int COL_COUNT = 10;
+	public static final int ICOL_COUNT = 10;
 		
 	/**
 	 * The number of visible rows on the board.
 	 */
-	private static final int VISIBLE_ROW_COUNT = 20;
+	private static final int IVISIBLE_ROW_COUNT = 20;
 	
 	/**
 	 * The number of rows that are hidden from view.
 	 */
-	private static final int HIDDEN_ROW_COUNT = 2;
+	private static final int IHIDDEN_ROW_COUNT = 2;
 	
 	/**
 	 * The total number of rows that the board contains.
 	 */
-	public static final int ROW_COUNT = VISIBLE_ROW_COUNT + HIDDEN_ROW_COUNT;
+	public static final int IROW_COUNT = IVISIBLE_ROW_COUNT + IHIDDEN_ROW_COUNT;
 	
 	/**
 	 * The number of pixels that a tile takes up.
 	 */
-	public static final int TILE_SIZE = 24;
+	public static final int ITILE_SIZE = 24;
 	
 	/**
 	 * The width of the shading on the tiles.
 	 */
-	public static final int SHADE_WIDTH = 4;
+	public static final int ISHADE_WIDTH = 4;
 	
 	/**
 	 * The central x coordinate on the game board.
 	 */
-	private static final int CENTER_X = COL_COUNT * TILE_SIZE / 2;
+	private static final int ICENTER_X = ICOL_COUNT * ITILE_SIZE / 2;
 	
 	/**
 	 * The central y coordinate on the game board.
 	 */
-	private static final int CENTER_Y = VISIBLE_ROW_COUNT * TILE_SIZE / 2;
+	private static final int ICENTER_Y = IVISIBLE_ROW_COUNT * ITILE_SIZE / 2;
 		
 	/**
 	 * The total width of the panel.
 	 */
-	public static final int PANEL_WIDTH = COL_COUNT * TILE_SIZE + BORDER_WIDTH * 2;
+	public static final int IPANEL_WIDTH = ICOL_COUNT * ITILE_SIZE + IBORDER_WIDTH * 2;
 	
 	/**
 	 * The total height of the panel.
 	 */
-	public static final int PANEL_HEIGHT = VISIBLE_ROW_COUNT * TILE_SIZE + BORDER_WIDTH * 2;
+	public static final int PANEL_HEIGHT = IVISIBLE_ROW_COUNT * ITILE_SIZE + IBORDER_WIDTH * 2;
 	
 	/**
 	 * The larger font to display.
@@ -96,7 +96,7 @@ public class BoardPanel extends JPanel {
 	/**
 	 * The Tetris instance.
 	 */
-	private Tetris tetris;
+	private Tetris tetTris;
 	
 	/**
 	 * The tiles that make up the board.
@@ -112,13 +112,13 @@ public class BoardPanel extends JPanel {
 
 	/**
 	 * Crates a new GameBoard instance.
-	 * @param tetris The Tetris instance to use.
+	 * @param tetTris The Tetris instance to use.
 	 */
-	public BoardPanel(Tetris tetris) {
-		this.tetris = tetris;
-		this.tiles = new TileType[ROW_COUNT][COL_COUNT];
+	public BoardPanel(Tetris tetTris) {
+		this.tetTris = tetTris;
+		this.tiles = new TileType[IROW_COUNT][ICOL_COUNT];
 		this.shineFactor = 0;
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		setPreferredSize(new Dimension(IPANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(Color.BLACK);
 	}
 	
@@ -130,8 +130,8 @@ public class BoardPanel extends JPanel {
 		 * Loop through every tile index and set it's value
 		 * to null to clear the board.
 		 */
-		for(int i = 0; i < ROW_COUNT; i++) {
-			for(int j = 0; j < COL_COUNT; j++) {
+		for(int i = 0; i < IROW_COUNT; i++) {
+			for(int j = 0; j < ICOL_COUNT; j++) {
 				tiles[i][j] = null;
 			}
 		}
@@ -148,12 +148,12 @@ public class BoardPanel extends JPanel {
 	public boolean isValidAndEmpty(TileType type, int x, int y, int rotation) {
 				
 		//Ensure the piece is in a valid column.
-		if(x < -type.getLeftInset(rotation) || x + type.getDimension() - type.getRightInset(rotation) >= COL_COUNT) {
+		if(x < -type.getLeftInset(rotation) || x + type.getDimension() - type.getRightInset(rotation) >= ICOL_COUNT) {
 			return false;
 		}
 		
 		//Ensure the piece is in a valid row.
-		if(y < -type.getTopInset(rotation) || y + type.getDimension() - type.getBottomInset(rotation) >= ROW_COUNT) {
+		if(y < -type.getTopInset(rotation) || y + type.getDimension() - type.getBottomInset(rotation) >= IROW_COUNT) {
 			return false;
 		}
 		
@@ -212,7 +212,7 @@ public class BoardPanel extends JPanel {
 		 * The checkLine function handles clearing the line and
 		 * shifting the rest of the board down for us.
 		 */
-		for(int row = 0; row < ROW_COUNT; row++) {
+		for(int row = 0; row < IROW_COUNT; row++) {
 			if(checkLine(row)) {
 				completedLines++;
 			}
@@ -230,7 +230,7 @@ public class BoardPanel extends JPanel {
 		 * Iterate through every column in this row. If any of them are
 		 * empty, then the row is not full.
 		 */
-		for(int col = 0; col < COL_COUNT; col++) {
+		for(int col = 0; col < ICOL_COUNT; col++) {
 			if(!isOccupied(col, line)) {
 				return false;
 			}
@@ -241,7 +241,7 @@ public class BoardPanel extends JPanel {
 		 * To do this, we simply shift every row above it down by one.
 		 */
 		for(int row = line - 1; row >= 0; row--) {
-			for(int col = 0; col < COL_COUNT; col++) {
+			for(int col = 0; col < ICOL_COUNT; col++) {
 				setTile(col, row + 1, getTile(col, row));
 			}
 		}
@@ -315,17 +315,17 @@ public class BoardPanel extends JPanel {
 		super.paintComponent(g);
 		
 		//This helps simplify the positioning of things.
-		g.translate(BORDER_WIDTH, BORDER_WIDTH);
+		g.translate(IBORDER_WIDTH, IBORDER_WIDTH);
 		
 		/*
 		 * Draw the board differently depending on the current game state.
 		 */
-		if(tetris.isPaused()) {
+		if(tetTris.isPaused()) {
 			g.setFont(LARGE_FONT);
 			g.setColor(Color.WHITE);
 			String msg = "PAUSED";
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, CENTER_Y);
-		} else if(tetris.isNewGame() || tetris.isGameOver()) {
+			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, ICENTER_Y);
+		} else if(tetTris.isNewGame() || tetTris.isGameOver()) {
 			g.setFont(LARGE_FONT);
 			g.setColor(Color.WHITE);
 			
@@ -334,21 +334,21 @@ public class BoardPanel extends JPanel {
 			 * we can handle them together and just use a ternary operator to change
 			 * the messages that are displayed.
 			 */
-			String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
+			String msg = tetTris.isNewGame() ? "TETRIS" : "GAME OVER";
+			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
 			g.setFont(SMALL_FONT);
-			msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
+			msg = "Press Enter to Play" + (tetTris.isNewGame() ? "" : " Again");
+			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
 		} else {
 			
 			/*
 			 * Draw the tiles onto the board.
 			 */
-			for(int x = 0; x < COL_COUNT; x++) {
-				for(int y = HIDDEN_ROW_COUNT; y < ROW_COUNT; y++) {
+			for(int x = 0; x < ICOL_COUNT; x++) {
+				for(int y = IHIDDEN_ROW_COUNT; y < IROW_COUNT; y++) {
 					TileType tile = getTile(x, y);
 					if(tile != null) {
-						drawTile(tile, x * TILE_SIZE, (y - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+						drawTile(tile, x * ITILE_SIZE, (y - IHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
 					}
 				}
 			}
@@ -359,10 +359,10 @@ public class BoardPanel extends JPanel {
 			 * part of the board, it would need to be removed every frame which
 			 * would just be slow and confusing.
 			 */
-			TileType type = tetris.getPieceType();
-			int pieceCol = tetris.getPieceCol();
-			int pieceRow = tetris.getPieceRow();
-			int rotation = tetris.getPieceRotation();
+			TileType type = tetTris.getPieceType();
+			int pieceCol = tetTris.getPieceCol();
+			int pieceRow = tetTris.getPieceRow();
+			int rotation = tetTris.getPieceRotation();
 			/*
 			 * Limit the amount of brightness a piece can be drawn with to
 			 * animate a "shining" effect.
@@ -374,8 +374,8 @@ public class BoardPanel extends JPanel {
 			for(int col = 0; col < type.getDimension(); col++) {
 				for(int row = 0; row < type.getDimension(); row++) {
 					if(pieceRow + row >= 2 && type.isTile(col, row, rotation)) {
-						int iX = (pieceCol + col) * TILE_SIZE;
-						int iY = (pieceRow + row - HIDDEN_ROW_COUNT) * TILE_SIZE;
+						int iX = (pieceCol + col) * ITILE_SIZE;
+						int iY = (pieceRow + row - IHIDDEN_ROW_COUNT) * ITILE_SIZE;
 						// Draw a shining block randomly
 						switch ((int)(Math.random() * 10)){
 							case 1:
@@ -401,7 +401,7 @@ public class BoardPanel extends JPanel {
 			 */
 			Color base = type.getBaseColor();
 			base = new Color(base.getRed(), base.getGreen(), base.getBlue(), 20);
-			for(int lowest = pieceRow; lowest < ROW_COUNT; lowest++) {
+			for(int lowest = pieceRow; lowest < IROW_COUNT; lowest++) {
 				//If no collision is detected, try the next row.
 				if(isValidAndEmpty(type, pieceCol, lowest, rotation)) {					
 					continue;
@@ -414,7 +414,7 @@ public class BoardPanel extends JPanel {
 				for(int col = 0; col < type.getDimension(); col++) {
 					for(int row = 0; row < type.getDimension(); row++) {
 						if(lowest + row >= 2 && type.isTile(col, row, rotation)) {
-							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * TILE_SIZE, (lowest + row - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * ITILE_SIZE, (lowest + row - IHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
 						}
 					}
 				}
@@ -427,10 +427,10 @@ public class BoardPanel extends JPanel {
 			 * for players, and makes the pieces look nicer by breaking them up.
 			 */
 			g.setColor(Color.DARK_GRAY);
-			for(int x = 0; x < COL_COUNT; x++) {
-				for(int y = 0; y < VISIBLE_ROW_COUNT; y++) {
-					g.drawLine(0, y * TILE_SIZE, COL_COUNT * TILE_SIZE, y * TILE_SIZE);
-					g.drawLine(x * TILE_SIZE, 0, x * TILE_SIZE, VISIBLE_ROW_COUNT * TILE_SIZE);
+			for(int x = 0; x < ICOL_COUNT; x++) {
+				for(int y = 0; y < IVISIBLE_ROW_COUNT; y++) {
+					g.drawLine(0, y * ITILE_SIZE, ICOL_COUNT * ITILE_SIZE, y * ITILE_SIZE);
+					g.drawLine(x * ITILE_SIZE, 0, x * ITILE_SIZE, IVISIBLE_ROW_COUNT * ITILE_SIZE);
 				}
 			}
 		}
@@ -439,7 +439,7 @@ public class BoardPanel extends JPanel {
 		 * Draw the outline.
 		 */
 		g.setColor(Color.WHITE);
-		g.drawRect(0, 0, TILE_SIZE * COL_COUNT, TILE_SIZE * VISIBLE_ROW_COUNT);
+		g.drawRect(0, 0, ITILE_SIZE * ICOL_COUNT, ITILE_SIZE * IVISIBLE_ROW_COUNT);
 	}
 	
 	/**
@@ -468,14 +468,14 @@ public class BoardPanel extends JPanel {
 		 * Fill the entire tile with the base color.
 		 */
 		g.setColor(base);
-		g.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+		g.fillRect(x, y, ITILE_SIZE, ITILE_SIZE);
 		
 		/*
 		 * Fill the bottom and right edges of the tile with the dark shading color.
 		 */
 		g.setColor(dark);
-		g.fillRect(x, y + TILE_SIZE - SHADE_WIDTH, TILE_SIZE, SHADE_WIDTH);
-		g.fillRect(x + TILE_SIZE - SHADE_WIDTH, y, SHADE_WIDTH, TILE_SIZE);
+		g.fillRect(x, y + ITILE_SIZE - ISHADE_WIDTH, ITILE_SIZE, ISHADE_WIDTH);
+		g.fillRect(x + ITILE_SIZE - ISHADE_WIDTH, y, ISHADE_WIDTH, ITILE_SIZE);
 		
 		/*
 		 * Fill the top and left edges with the light shading. We draw a single line
@@ -483,9 +483,9 @@ public class BoardPanel extends JPanel {
 		 * looking diagonal where the light and dark shading meet.
 		 */
 		g.setColor(light);
-		for(int i = 0; i < SHADE_WIDTH; i++) {
-			g.drawLine(x, y + i, x + TILE_SIZE - i - 1, y + i);
-			g.drawLine(x + i, y, x + i, y + TILE_SIZE - i - 1);
+		for(int i = 0; i < ISHADE_WIDTH; i++) {
+			g.drawLine(x, y + i, x + ITILE_SIZE - i - 1, y + i);
+			g.drawLine(x + i, y, x + i, y + ITILE_SIZE - i - 1);
 		}
 	}
 

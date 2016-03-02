@@ -551,8 +551,8 @@ public class Tetris extends JFrame {
 		 */
 		if(iCurrentCol < -left) {
 			newColumn -= iCurrentCol - left;
-		} else if(iCurrentCol + tilCurrentType.getDimension() - right >= BoardPanel.COL_COUNT) {
-			newColumn -= (iCurrentCol + tilCurrentType.getDimension() - right) - BoardPanel.COL_COUNT + 1;
+		} else if(iCurrentCol + tilCurrentType.getDimension() - right >= BoardPanel.ICOL_COUNT) {
+			newColumn -= (iCurrentCol + tilCurrentType.getDimension() - right) - BoardPanel.ICOL_COUNT + 1;
 		}
 		
 		/*
@@ -561,8 +561,8 @@ public class Tetris extends JFrame {
 		 */
 		if(iCurrentRow < -top) {
 			newRow -= iCurrentRow - top;
-		} else if(iCurrentRow + tilCurrentType.getDimension() - bottom >= BoardPanel.ROW_COUNT) {
-			newRow -= (iCurrentRow + tilCurrentType.getDimension() - bottom) - BoardPanel.ROW_COUNT + 1;
+		} else if(iCurrentRow + tilCurrentType.getDimension() - bottom >= BoardPanel.IROW_COUNT) {
+			newRow -= (iCurrentRow + tilCurrentType.getDimension() - bottom) - BoardPanel.IROW_COUNT + 1;
 		}
 		
 		/*

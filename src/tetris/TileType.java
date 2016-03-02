@@ -14,7 +14,7 @@ public enum TileType {
 	 * Each boolean represents a block inside a grid of 4X4. When it has a
 	 * value of true, the block is part of that specific type of Tile.
 	 */
-	TypeI(new Color(BoardPanel.COLOR_MIN, BoardPanel.COLOR_MAX, BoardPanel.COLOR_MAX), 4, 4, 1, new boolean[][] {
+	TypeI(new Color(BoardPanel.ICOLOR_MIN, BoardPanel.ICOLOR_MAX, BoardPanel.ICOLOR_MAX), 4, 4, 1, new boolean[][] {
 		{
 			false,	false,	false,	false,
 			true,	true,	true,	true,
@@ -44,7 +44,7 @@ public enum TileType {
 	/**
 	 * Piece TypeJ.
 	 */
-	TypeJ(new Color(BoardPanel.COLOR_MIN, BoardPanel.COLOR_MIN, BoardPanel.COLOR_MAX), 3, 3, 2, new boolean[][] {
+	TypeJ(new Color(BoardPanel.ICOLOR_MIN, BoardPanel.ICOLOR_MIN, BoardPanel.ICOLOR_MAX), 3, 3, 2, new boolean[][] {
 		{
 			true,	false,	false,
 			true,	true,	true,
@@ -70,7 +70,7 @@ public enum TileType {
 	/**
 	 * Piece TypeL.
 	 */
-	TypeL(new Color(BoardPanel.COLOR_MAX, 127, BoardPanel.COLOR_MIN), 3, 3, 2, new boolean[][] {
+	TypeL(new Color(BoardPanel.ICOLOR_MAX, 127, BoardPanel.ICOLOR_MIN), 3, 3, 2, new boolean[][] {
 		{
 			false,	false,	true,
 			true,	true,	true,
@@ -96,7 +96,7 @@ public enum TileType {
 	/**
 	 * Piece TypeO.
 	 */
-	TypeO(new Color(BoardPanel.COLOR_MAX, BoardPanel.COLOR_MAX, BoardPanel.COLOR_MIN), 2, 2, 2, new boolean[][] {
+	TypeO(new Color(BoardPanel.ICOLOR_MAX, BoardPanel.ICOLOR_MAX, BoardPanel.ICOLOR_MIN), 2, 2, 2, new boolean[][] {
 		{
 			true,	true,
 			true,	true,
@@ -118,7 +118,7 @@ public enum TileType {
 	/**
 	 * Piece TypeS.
 	 */
-	TypeS(new Color(BoardPanel.COLOR_MIN, BoardPanel.COLOR_MAX, BoardPanel.COLOR_MIN), 3, 3, 2, new boolean[][] {
+	TypeS(new Color(BoardPanel.ICOLOR_MIN, BoardPanel.ICOLOR_MAX, BoardPanel.ICOLOR_MIN), 3, 3, 2, new boolean[][] {
 		{
 			false,	true,	true,
 			true,	true,	false,
@@ -144,7 +144,7 @@ public enum TileType {
 	/**
 	 * Piece TypeT.
 	 */
-	TypeT(new Color(128, BoardPanel.COLOR_MIN, 128), 3, 3, 2, new boolean[][] {
+	TypeT(new Color(128, BoardPanel.ICOLOR_MIN, 128), 3, 3, 2, new boolean[][] {
 		{
 			false,	true,	false,
 			true,	true,	true,
@@ -170,7 +170,7 @@ public enum TileType {
 	/**
 	 * Piece TypeZ.
 	 */
-	TypeZ(new Color(BoardPanel.COLOR_MAX, BoardPanel.COLOR_MIN, BoardPanel.COLOR_MIN), 3, 3, 2, new boolean[][] {
+	TypeZ(new Color(BoardPanel.ICOLOR_MAX, BoardPanel.ICOLOR_MIN, BoardPanel.ICOLOR_MIN), 3, 3, 2, new boolean[][] {
 		{
 			true,	true,	false,
 			false,	true,	true,

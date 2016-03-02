@@ -19,12 +19,12 @@ public class SidePanel extends JPanel {
 	/**
 	 * The dimensions of each tile on the next piece preview.
 	 */
-	private static final int TILE_SIZE = BoardPanel.TILE_SIZE >> 1;
+	private static final int TILE_SIZE = BoardPanel.ITILE_SIZE >> 1;
 	
 	/**
 	 * The width of the shading on each tile on the next piece preview.
 	 */
-	private static final int SHADE_WIDTH = BoardPanel.SHADE_WIDTH >> 1;
+	private static final int SHADE_WIDTH = BoardPanel.ISHADE_WIDTH >> 1;
 	
 	/**
 	 * The number of rows and columns in the preview window. Set to
