@@ -295,6 +295,7 @@ public class Tetris extends JFrame {
             }else{
                 sTrack.setLooping(true);
                 sTrack.play();
+                bCheck = true;
             }
         }
         
