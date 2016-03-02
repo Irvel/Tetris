@@ -101,7 +101,7 @@ public class BoardPanel extends JPanel {
 	/**
 	 * The tiles that make up the board.
 	 */
-	private TileType[][] tiles;
+	private TileType[][] tilTile;
 
 	/**
 	 * The current amount of brightness a piece is being drawn with to
@@ -116,7 +116,7 @@ public class BoardPanel extends JPanel {
 	 */
 	public BoardPanel(Tetris tetTris) {
 		this.tetTris = tetTris;
-		this.tiles = new TileType[IROW_COUNT][ICOL_COUNT];
+		this.tilTile = new TileType[IROW_COUNT][ICOL_COUNT];
 		this.shineFactor = 0;
 		setPreferredSize(new Dimension(IPANEL_WIDTH, PANEL_HEIGHT));
 		setBackground(Color.BLACK);
@@ -132,7 +132,7 @@ public class BoardPanel extends JPanel {
 		 */
 		for(int i = 0; i < IROW_COUNT; i++) {
 			for(int j = 0; j < ICOL_COUNT; j++) {
-				tiles[i][j] = null;
+				tilTile[i][j] = null;
 			}
 		}
 	}
@@ -256,7 +256,7 @@ public class BoardPanel extends JPanel {
 	 * @return Whether or not the tile is occupied.
 	 */
 	private boolean isOccupied(int x, int y) {
-		return tiles[y][x] != null;
+		return tilTile[y][x] != null;
 	}
 	
 	/**
@@ -266,7 +266,7 @@ public class BoardPanel extends JPanel {
 	 * @param type The value to set to the tile to.
 	 */
 	private void setTile(int  x, int y, TileType type) {
-		tiles[y][x] = type;
+		tilTile[y][x] = type;
 	}
 
 	/**
@@ -276,7 +276,7 @@ public class BoardPanel extends JPanel {
 	 * @return The tile.
 	 */
 	private TileType getTile(int x, int y) {
-		return tiles[y][x];
+		return tilTile[y][x];
 	}
 
 	/**
@@ -284,7 +284,7 @@ public class BoardPanel extends JPanel {
 	 * @return The tile matrix.
 	 */
 	public TileType[][] getTiles() {
-		return tiles;
+		return tilTile;
 	}
 
 	/**
@@ -292,7 +292,7 @@ public class BoardPanel extends JPanel {
 	 * @param tilMat The tile matrix.
 	 */
 	public void setTiles(TileType[][] tilMat) {
-		tiles = tilMat;
+		tilTile = tilMat;
 	}
 
 	/**
