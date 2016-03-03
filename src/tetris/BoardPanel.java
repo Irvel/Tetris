@@ -65,7 +65,12 @@ public class BoardPanel extends JPanel {
 	 * The number of extra pixels that the glow of a tile takes up.
 	 */
 	public static final int iGLOW_OFFSET = 1;
-	
+
+	/**
+	 * The option for a galaxy in the background
+	 */
+	public static final int iGALAXY = 1;
+
 	/**
 	 * The width of the shading on the tiles.
 	 */
@@ -132,14 +137,26 @@ public class BoardPanel extends JPanel {
 	 * The level of displacement from the gradient center to animate motion.
 	 */
 	private float iGradientModifier;
-        /**
-         * 
-         */
-        private Image imgBackground;
-        /**
-         * Integer to chose which image to paint
-         */
-        private int iImage;
+
+	/**
+	 *
+	 */
+	private Image imgBackground;
+
+	/**
+	 * Integer to chose which image to paint
+	 */
+	private int iImageChoice;
+
+	/**
+	 * Amount to displace the background to give a parallax effect
+	 */
+	private float iBackgroundDisplacement;
+
+	/**
+	 * Rate and direction at which the background is being displaced
+	 */
+	private float iDisplacementFactor;
 
         
 	/**
@@ -149,10 +166,12 @@ public class BoardPanel extends JPanel {
 	public BoardPanel(Tetris tetTetris) {
 		this.tetTetris = tetTetris;
 		this.tilTile = new TileType[iROW_COUNT][iCOL_COUNT];
-		this.fAlphaAmount = 0.2f;
+		this.fAlphaAmount = 0.4f;
 		this.fAlphaFactor = 0.01f;
 		this.iGradientModifier = 0;
-                iImage = 1;
+		this.iImageChoice = 1;
+		this.iBackgroundDisplacement = -2.0f;
+		this.iDisplacementFactor = -0.3f;
 		setPreferredSize(new Dimension(iPANEL_WIDTH, iPANEL_HEIGHT));
 		setBackground(Color.BLACK);
 	}
@@ -363,43 +382,43 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
-	 * Increases the brightness of a given color by a given factor
-	 * @param iBrightFactor The brightness factor.
-	 * @param colColor The original color to increase brightness on.
-	 * @return     a new <code>Color</code> object that is
-	 *             a brighter version of the received <code>Color</code>
-	 *             by a factor of brightFactor.
+	 * Sets the current background option
+	 * @param iImageSelection The background image option
 	 */
-	private Color brighter(Color colColor, int iBrightFactor) {
-		for (int i = 0; i < iBrightFactor; i++){
-			colColor = colColor.brighter();
-		}
-		return colColor;
+	public void setImage(int iImageSelection){
+		this.iImageChoice = iImageSelection;
 	}
-        
-        public void whichImage(int imaImage){
-            this.iImage = imaImage;
-        }
-        
-        private void setBackground(int imaImage, Graphics graGraphics){
-            URL urlImagen;
-            this.iImage = imaImage;
-            if (imaImage == 1){
-                urlImagen = this.getClass().getResource("background.jpg");
-            }
-			else{
-                urlImagen = this.getClass().getResource("black.png");
-            }
-            imgBackground = Toolkit.getDefaultToolkit().getImage(urlImagen);
-            graGraphics.drawImage(imgBackground,0,0,this);
-        }
+
+	/**
+	 * Sets the current background depending on the provided option
+	 * @param imaImage The option of background 1 being galaxy and 0 being black
+	 * @param graGraphics The graphics object.
+	 */
+	private void setBackground(int imaImage, Graphics graGraphics){
+		URL urlImagen;
+		if(iBackgroundDisplacement > 1 || iBackgroundDisplacement <= -1500){
+			iDisplacementFactor *= -1;
+		}
+		this.iImageChoice = imaImage;
+		if (imaImage == iGALAXY){
+			urlImagen = this.getClass().getResource("background.jpg");
+		}
+		else{
+			urlImagen = this.getClass().getResource("black.png");
+		}
+		imgBackground = Toolkit.getDefaultToolkit().getImage(urlImagen);
+		graGraphics.drawImage(imgBackground,
+							  0,
+							  (int)iBackgroundDisplacement,
+							  this);
+		iBackgroundDisplacement += iDisplacementFactor;
+	}
 	
         
 	@Override
 	public void paintComponent(Graphics graGraphics) {
 		super.paintComponent(graGraphics);
-                setBackground(iImage,graGraphics);
-                graGraphics.drawImage(imgBackground, 0, 0, this);
+		setBackground(iImageChoice, graGraphics);
 		//This helps simplify the positioning of things.
 		graGraphics.translate(iBORDER_WIDTH, iBORDER_WIDTH);
 		
@@ -435,7 +454,12 @@ public class BoardPanel extends JPanel {
 			 * When the alpha has reached the maximum value, start decreasing
 			 * it and viceversa.
 			 */
-			if(fAlphaAmount >= 0.8f || fAlphaAmount <= 0.1f){
+			if(fAlphaAmount >= 0.80f){
+				fAlphaAmount = 0.75f;
+				fAlphaFactor *= -1;
+			}
+			else if(fAlphaAmount <= 0.200f){
+				fAlphaAmount = 0.3f;
 				fAlphaFactor *= -1;
 			}
 
@@ -494,11 +518,11 @@ public class BoardPanel extends JPanel {
 	 */
 	private void drawFallingPiece(Graphics graGraphics, TileType tilType, int iPieceCol, int iPieceRow, int iRotation) {
 		//Draw the piece onto the board.
-		for(int col = 0; col < tilType.getDimension(); col++) {
-            for(int row = 0; row < tilType.getDimension(); row++) {
-                if(iPieceRow + row >= 2 && tilType.isTile(col, row, iRotation)) {
-                    int iX = (iPieceCol + col) * iTILE_SIZE;
-                    int iY = (iPieceRow + row - iHIDDEN_ROW_COUNT) * iTILE_SIZE;
+		for(int iCol = 0; iCol < tilType.getDimension(); iCol++) {
+            for(int iRow = 0; iRow < tilType.getDimension(); iRow++) {
+                if(iPieceRow + iRow >= 2 && tilType.isTile(iCol, iRow, iRotation)) {
+                    int iX = (iPieceCol + iCol) * iTILE_SIZE;
+                    int iY = (iPieceRow + iRow - iHIDDEN_ROW_COUNT) * iTILE_SIZE;
                     // Draw base block
                     drawTile(tilType, iX, iY, graGraphics);
 
@@ -720,8 +744,7 @@ public class BoardPanel extends JPanel {
 		/*
 		 * Fill the entire tile with the light and dark colors gradient.
 		 */
-		g2d.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.SRC_OVER, fAlphaValue));
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fAlphaValue));
 		g2d.setPaint(paint);
 		g2d.fillRect(iX - iGLOW_OFFSET,
 					 iY - iGLOW_OFFSET,
