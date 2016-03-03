@@ -111,12 +111,13 @@ public class SidePanel extends JPanel {
 		super.paintComponent(graGraphics);
 		//Set the color for drawing.
 		graGraphics.setColor(colDRAW_COLOR);
+
 		/*
      	 * Draw the information of the side panel
      	 */
-		drawPreviewPiece(graGraphics);
 		drawStats(graGraphics);
 		drawControls(graGraphics);
+		drawPreviewPiece(graGraphics);
 	}
 
 	/**

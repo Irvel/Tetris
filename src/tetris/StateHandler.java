@@ -8,6 +8,8 @@ import java.io.*;
  * of the game.
  *
  * @author Irvel
+ * @author Jorge
+ * @version 0.3
  */
 public class StateHandler {
 
@@ -29,7 +31,6 @@ public class StateHandler {
         catch (IOException e) {
             e.printStackTrace();
         }
-        //System.out.println("Finished writing stuff");
     }
 
     /**

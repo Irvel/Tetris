@@ -251,21 +251,21 @@ public enum TileType {
 	/**
 	 * Creates a new TileType.
 	 * @param cColor The base color of the tile.
-	 * @param dimension The dimensions of the tiles array.
-	 * @param cols The number of columns.
-	 * @param rows The number of rows.
-	 * @param tiles The tiles.
+	 * @param iDimension The dimensions of the tiles array.
+	 * @param iCols The number of columns.
+	 * @param iRows The number of rows.
+	 * @param bTiles The tiles.
 	 */
-	private TileType(Color cColor, int dimension, int cols, int rows, boolean[][] tiles) {
+	private TileType(Color cColor, int iDimension, int iCols, int iRows, boolean[][] bTiles) {
 		this.cBaseColor = cColor;
 		this.cLightColor = cColor.brighter();
 		this.cDarkColor = cColor.darker();
-		this.iDimension = dimension;
-		this.tiles = tiles;
-		this.iCols = cols;
-		this.iRows = rows;
+		this.iDimension = iDimension;
+		this.tiles = bTiles;
+		this.iCols = iCols;
+		this.iRows = iRows;
 		
-		this.iSpawnCol = 5 - (iDimension >> 1);
+		this.iSpawnCol = 5 - (this.iDimension >> 1);
 		this.iSpawnRow = getTopInset(0);
 	}
 	

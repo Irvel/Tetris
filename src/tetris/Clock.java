@@ -38,19 +38,19 @@ public class Clock implements Serializable {
 	
 	/**
 	 * Creates a new clock and sets it's cycles-per-second.
-	 * @param cyclesPerSecond The number of cycles that elapse per second.
+	 * @param fCyclesPerSecond The number of cycles that elapse per second.
 	 */
-	public Clock(float cyclesPerSecond) {
-		setCyclesPerSecond(cyclesPerSecond);
+	public Clock(float fCyclesPerSecond) {
+		setCyclesPerSecond(fCyclesPerSecond);
 		reset();
 	}
 	
 	/**
 	 * Sets the number of cycles that elapse per second.
-	 * @param cyclesPerSecond The number of cycles per second.
+	 * @param fCyclesPerSecond The number of cycles per second.
 	 */
-	public void setCyclesPerSecond(float cyclesPerSecond) {
-		this.fMillisPerCycle = (1.0f / cyclesPerSecond) * 1000;
+	public void setCyclesPerSecond(float fCyclesPerSecond) {
+		this.fMillisPerCycle = (1.0f / fCyclesPerSecond) * 1000;
 	}
 	
 	/**
