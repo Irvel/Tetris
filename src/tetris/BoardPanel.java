@@ -59,52 +59,52 @@ public class BoardPanel extends JPanel {
 	/**
 	 * The number of pixels that a tile takes up.
 	 */
-	public static final int ITILE_SIZE = 24;
+	public static final int iTILE_SIZE = 24;
 
 	/**
 	 * The number of extra pixels that the glow of a tile takes up.
 	 */
-	public static final int IGLOW_OFFSET = 1;
+	public static final int iGLOW_OFFSET = 1;
 	
 	/**
 	 * The width of the shading on the tiles.
 	 */
-	public static final int ISHADE_WIDTH = 4;
+	public static final int iSHADE_WIDTH = 4;
 	
 	/**
 	 * The central x coordinate on the game board.
 	 */
-	private static final int ICENTER_X = iCOL_COUNT * ITILE_SIZE / 2;
+	private static final int iCENTER_X = iCOL_COUNT * iTILE_SIZE / 2;
 	
 	/**
 	 * The central y coordinate on the game board.
 	 */
-	private static final int ICENTER_Y = iVISIBLE_ROW_COUNT * ITILE_SIZE / 2;
+	private static final int iCENTER_Y = iVISIBLE_ROW_COUNT * iTILE_SIZE / 2;
 		
 	/**
 	 * The total width of the panel.
 	 */
-	public static final int IPANEL_WIDTH = iCOL_COUNT * ITILE_SIZE + iBORDER_WIDTH * 2;
+	public static final int iPANEL_WIDTH = iCOL_COUNT * iTILE_SIZE + iBORDER_WIDTH * 2;
 	
 	/**
 	 * The total height of the panel.
 	 */
-	public static final int PANEL_HEIGHT = iVISIBLE_ROW_COUNT * ITILE_SIZE + iBORDER_WIDTH * 2;
+	public static final int iPANEL_HEIGHT = iVISIBLE_ROW_COUNT * iTILE_SIZE + iBORDER_WIDTH * 2;
 	
 	/**
 	 * The larger font to display.
 	 */
-	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 44);
+	private static final Font fonLARGE_FONT = new Font("Tahoma", Font.BOLD, 44);
 
 	/**
 	 * The medium-sized font to display.
 	 */
-	private static final Font MEDIUM_FONT = new Font("Tahoma", Font.BOLD, 28);
+	private static final Font fonMEDIUM_FONT = new Font("Tahoma", Font.BOLD, 28);
 
 	/**
 	 * The smaller font to display.
 	 */
-	private static final Font SMALL_FONT = new Font("Tahoma", Font.PLAIN, 14);
+	private static final Font fonSMALL_FONT = new Font("Tahoma", Font.PLAIN, 14);
 	
 	/**
 	 * The Tetris instance.
@@ -149,11 +149,11 @@ public class BoardPanel extends JPanel {
 	public BoardPanel(Tetris tetTris) {
 		this.tetTris = tetTris;
 		this.tilTile = new TileType[iROW_COUNT][iCOL_COUNT];
-		this.fAlphaAmount = 0.1f;
+		this.fAlphaAmount = 0.2f;
 		this.fAlphaFactor = 0.01f;
 		this.iGradientModifier = 0;
                 iImage = 1;
-		setPreferredSize(new Dimension(IPANEL_WIDTH, PANEL_HEIGHT));
+		setPreferredSize(new Dimension(iPANEL_WIDTH, iPANEL_HEIGHT));
 		setBackground(Color.BLACK);
 	}
 	
@@ -374,24 +374,25 @@ public class BoardPanel extends JPanel {
 		 * Draw the board differently depending on the current game state.
 		 */
 		if(tetTris.isPaused()) {
-			g.setFont(MEDIUM_FONT);
+			g.setFont(fonMEDIUM_FONT);
 			String msg = "PAUSED";
 			/*
 			 * Draw a light gray shadow before the main text
 			 */
 			g.setColor(Color.LIGHT_GRAY);
 			g.drawString(msg,
-						 ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
-						 ICENTER_Y + 2);
+						 iCENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
+						 iCENTER_Y + 2);
 
 			/*
 			 * Draw the main text
 			 */
 			g.setColor(Color.WHITE);
-			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, ICENTER_Y);
+			g.drawString(msg, iCENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
+						 iCENTER_Y);
 		}
 		else if(tetTris.isNewGame() || tetTris.isGameOver()) {
-			g.setFont(LARGE_FONT);
+			g.setFont(fonLARGE_FONT);
 			g.setColor(Color.WHITE);
 			
 			/*
@@ -401,23 +402,23 @@ public class BoardPanel extends JPanel {
 			 */
 			String msg = tetTris.isNewGame() ? "TETRIS" : "GAME OVER";
 			if(Objects.equals(msg, "GAME OVER")){
-				g.setFont(MEDIUM_FONT);
+				g.setFont(fonMEDIUM_FONT);
 			}
 			/*
 			 * Draw a light gray shadow before the main text
 			 */
 			g.setColor(Color.LIGHT_GRAY);
 			g.drawString(msg,
-						 ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
+						 iCENTER_X - g.getFontMetrics().stringWidth(msg) / 2,
 						 150 + 2);
 			/*
 			 * Draw the main text
 			 */
 			g.setColor(Color.WHITE);
-			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
-			g.setFont(SMALL_FONT);
+			g.drawString(msg, iCENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
+			g.setFont(fonSMALL_FONT);
 			msg = "Press Enter to Play" + (tetTris.isNewGame() ? "" : " Again");
-			g.drawString(msg, ICENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
+			g.drawString(msg, iCENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
 		} else {
 			/*
 			 * Draw the tiles onto the board.
@@ -426,7 +427,7 @@ public class BoardPanel extends JPanel {
 				for(int y = iHIDDEN_ROW_COUNT; y < iROW_COUNT; y++) {
 					TileType tile = getTile(x, y);
 					if(tile != null) {
-						drawTile(tile, x * ITILE_SIZE, (y - iHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
+						drawTile(tile, x * iTILE_SIZE, (y - iHIDDEN_ROW_COUNT) * iTILE_SIZE, g);
 					}
 				}
 			}
@@ -453,8 +454,8 @@ public class BoardPanel extends JPanel {
 			for(int col = 0; col < type.getDimension(); col++) {
 				for(int row = 0; row < type.getDimension(); row++) {
 					if(pieceRow + row >= 2 && type.isTile(col, row, rotation)) {
-						int iX = (pieceCol + col) * ITILE_SIZE;
-						int iY = (pieceRow + row - iHIDDEN_ROW_COUNT) * ITILE_SIZE;
+						int iX = (pieceCol + col) * iTILE_SIZE;
+						int iY = (pieceRow + row - iHIDDEN_ROW_COUNT) * iTILE_SIZE;
 						// Draw base block
 						drawTile(type, iX, iY, g);
 
@@ -492,7 +493,7 @@ public class BoardPanel extends JPanel {
 				for(int col = 0; col < type.getDimension(); col++) {
 					for(int row = 0; row < type.getDimension(); row++) {
 						if(lowest + row >= 2 && type.isTile(col, row, rotation)) {
-							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * ITILE_SIZE, (lowest + row - iHIDDEN_ROW_COUNT) * ITILE_SIZE, g);
+							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * iTILE_SIZE, (lowest + row - iHIDDEN_ROW_COUNT) * iTILE_SIZE, g);
 						}
 					}
 				}
@@ -507,8 +508,8 @@ public class BoardPanel extends JPanel {
 			g.setColor(Color.DARK_GRAY);
 			for(int x = 0; x < iCOL_COUNT; x++) {
 				for(int y = 0; y < iVISIBLE_ROW_COUNT; y++) {
-					g.drawLine(0, y * ITILE_SIZE, iCOL_COUNT * ITILE_SIZE, y * ITILE_SIZE);
-					g.drawLine(x * ITILE_SIZE, 0, x * ITILE_SIZE, iVISIBLE_ROW_COUNT * ITILE_SIZE);
+					g.drawLine(0, y * iTILE_SIZE, iCOL_COUNT * iTILE_SIZE, y * iTILE_SIZE);
+					g.drawLine(x * iTILE_SIZE, 0, x * iTILE_SIZE, iVISIBLE_ROW_COUNT * iTILE_SIZE);
 				}
 			}
 		}
@@ -517,7 +518,7 @@ public class BoardPanel extends JPanel {
 		 * Draw the outline.
 		 */
 		g.setColor(Color.WHITE);
-		g.drawRect(0, 0, ITILE_SIZE * iCOL_COUNT, ITILE_SIZE * iVISIBLE_ROW_COUNT);
+		g.drawRect(0, 0, iTILE_SIZE * iCOL_COUNT, iTILE_SIZE * iVISIBLE_ROW_COUNT);
 	}
 	
 	/**
@@ -545,16 +546,16 @@ public class BoardPanel extends JPanel {
 		 * Fill the entire tile with the base color.
 		 */
 		g.setColor(base);
-		g.fillRect(x, y, ITILE_SIZE, ITILE_SIZE);
+		g.fillRect(x, y, iTILE_SIZE, iTILE_SIZE);
 		
 		/*
 		 * Fill the bottom and right edges of the tile with the dark shading color.
 		 */
 		g.setColor(dark);
-		g.fillRect(x, y + ITILE_SIZE - ISHADE_WIDTH, ITILE_SIZE,
-					 ISHADE_WIDTH);
-		g.fillRect(x + ITILE_SIZE - ISHADE_WIDTH, y, ISHADE_WIDTH,
-					 ITILE_SIZE);
+		g.fillRect(x, y + iTILE_SIZE - iSHADE_WIDTH, iTILE_SIZE,
+				   iSHADE_WIDTH);
+		g.fillRect(x + iTILE_SIZE - iSHADE_WIDTH, y, iSHADE_WIDTH,
+				   iTILE_SIZE);
 		
 		/*
 		 * Fill the top and left edges with the light shading. We draw a
@@ -563,9 +564,9 @@ public class BoardPanel extends JPanel {
 		 * looking diagonal where the light and dark shading meet.
 		 */
 		g.setColor(light);
-		for(int i = 0; i < ISHADE_WIDTH; i++) {
-			g.drawLine(x, y + i, x + ITILE_SIZE - i - 1, y + i);
-			g.drawLine(x + i, y, x + i, y + ITILE_SIZE - i - 1);
+		for(int i = 0; i < iSHADE_WIDTH; i++) {
+			g.drawLine(x, y + i, x + iTILE_SIZE - i - 1, y + i);
+			g.drawLine(x + i, y, x + i, y + iTILE_SIZE - i - 1);
 		}
 	}
 
@@ -609,10 +610,10 @@ public class BoardPanel extends JPanel {
 		g2d.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.SRC_OVER, fAlphaValue));
 		g2d.setPaint(paint);
-		g2d.fillRect(x - IGLOW_OFFSET,
-					 y - IGLOW_OFFSET,
-					 ITILE_SIZE + IGLOW_OFFSET * 2,
-					 ITILE_SIZE + IGLOW_OFFSET * 2);
+		g2d.fillRect(x - iGLOW_OFFSET,
+					 y - iGLOW_OFFSET,
+					 iTILE_SIZE + iGLOW_OFFSET * 2,
+					 iTILE_SIZE + iGLOW_OFFSET * 2);
 
 		g2d.setComposite(cCurrentComposite);
 	}

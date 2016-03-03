@@ -180,7 +180,7 @@ public class Tetris extends JFrame {
         /*
         * Drop - When pressed, we check to see that the game is not
         * paused and that there is no drop cooldown, then set the
-	* logic timer to run at a speed of 25 cycles per second.    
+		* logic timer to run at a speed of 25 cycles per second.
         */
         private void goDown(){
             if(!isPaused && iDropCooldown == 0){
@@ -189,9 +189,9 @@ public class Tetris extends JFrame {
         }
         /*
         * Move Left - When pressed, we check to see that the game is
-	* not paused and that the position to the left of the current
-	* position is valid. If so, we decrement the current column by 1.
-	*/        
+		* not paused and that the position to the left of the current
+		* position is valid. If so, we decrement the current column by 1.
+		*/
         private void moveLeft(){
             if(!isPaused && board.isValidAndEmpty(tilCurrentType, iCurrentCol - 1, 
                                                 iCurrentRow, iCurrentRotation)) {
@@ -202,7 +202,7 @@ public class Tetris extends JFrame {
         * Move Right - When pressed, we check to see that the game is
         * not paused and that the position to the right of the current
         * position is valid. If so, we increment the current column by 1.
-	*/
+		*/
         private void moveRight(){
             if(!isPaused && board.isValidAndEmpty(tilCurrentType, iCurrentCol + 1, 
                                                 iCurrentRow, iCurrentRotation)) {
@@ -212,11 +212,12 @@ public class Tetris extends JFrame {
         /*
         * Rotate Anticlockwise - When pressed, check to see that the game is not paused
         * and then attempt to rotate the piece anticlockwise. Because of the size and
-	* complexity of the rotation code, as well as it's similarity to clockwise
+		* complexity of the rotation code, as well as it's similarity to clockwise
         * rotation, the code for rotating the piece is handled in another method.
-	*/
+		*/
         private void rotateAntiClockwise(){
-            if(!isPaused){
+			// Avoid trying to rotate when the game is being closed or paused
+            if(!isPaused && tilCurrentType != null){
                 rotatePiece((iCurrentRotation == 0) ? 3 : iCurrentRotation - 1);
             }    
         }
@@ -225,19 +226,21 @@ public class Tetris extends JFrame {
         * and then attempt to rotate the piece clockwise. Because of the size and
         * complexity of the rotation code, as well as it's similarity to anticlockwise
         * rotation, the code for rotating the piece is handled in another method.
-	*/
+		*/
         private void rotateClockwise(){
-            if(!isPaused) {
+			// Avoid trying to rotate when the game is being closed or paused
+            if(!isPaused && tilCurrentType != null) {
                 rotatePiece((iCurrentRotation == 3) ? 0 : iCurrentRotation + 1);
             }
         }
         /*
-        *Pause Game - When pressed, check to see that we're currently playing a game.
+        * Pause Game - When pressed, check to see that we're currently
+        * playing a game.
         * If so, toggle the pause variable and update the logic timer to reflect this
         * change, otherwise the game will execute a huge number of updates and essentially
         * cause an instant game over when we unpause if we stay paused for more than a
         * minute or so.
-	*/
+		*/
         private void pauseGame(){
 
             bPaused = !bPaused;
@@ -255,35 +258,35 @@ public class Tetris extends JFrame {
             }
         }
         /*
-        * Start Game - When pressed, check to see that we're in either a game over or new
-        * game state. If so, reset the game.
-	*/
+         * Start Game - When pressed, check to see that we're in either a
+         * game over or new game state. If so, reset the game.
+		 */
         private void startAgain(){
             if(isGameOver || isNewGame){
                 
 		resetGame();
             }          
         }
+
         /*
-        * Save Game - When pressed, check to see that we're currently playing a game.
-        * If so, save the game's current state.
-        */
+         * Save Game - When pressed, check to see that we're currently
+         * playing a game. If so, save the game's current state.
+         */
         private void save(){
             if(!isGameOver && !isNewGame) {
                 saveGame(Tetris.this);
             }   
         }
+
         /*
-        * Load Game - When pressed, reset the game and load a
-        * previous game state.
-        */
+         * Load Game - When pressed, reset the game and load a
+         * previous game state.
+         */
         private void load(){
-            //resetGame();
             loadGame(Tetris.this);
-            //Tetris.this.getBoard().setInstance(Tetris.this);
-            //Tetris.this.getSide().setInstance(Tetris.this);
             lLogicTimer.reset();
         }
+
         /**
          * 
          * stopTrack() - When pressed, the theme track is paused
@@ -301,9 +304,9 @@ public class Tetris extends JFrame {
         }
         
         /**
-	 * Sets the action based on the key pressed
-	 * @param keyEvent The key pressed
-	 */
+	 	 * Sets the action based on the key pressed
+	 	 * @param keyEvent The key pressed
+	 	 */
         private void keyAction(KeyEvent keyEvent){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_S:
@@ -316,7 +319,8 @@ public class Tetris extends JFrame {
                     moveRight();
                     break;
                 case KeyEvent.VK_Q:
-                    rotateAntiClockwise();
+					if(!this.isGameOver())
+                    	rotateAntiClockwise();
                     break;
                 case KeyEvent.VK_E:
                     rotateClockwise();
@@ -330,9 +334,9 @@ public class Tetris extends JFrame {
             }
         }
         /**
-	 * Sets the action based on the key pressed
-	 * @param keyEvent The key pressed
-	 */
+	 	 * Sets the action based on the key pressed
+	 	 * @param keyEvent The key pressed
+	 	 */
         private void keyAction2(KeyEvent keyEvent){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_ENTER:
@@ -351,21 +355,22 @@ public class Tetris extends JFrame {
                     break;
             }
         }
-        /*
-        * Here we resize the frame to hold the BoardPanel and SidePanel instances,
-	* center the window on the screen, and show it to the user.
-	*/
-        private void resize(){
-            pack();
-            setLocationRelativeTo(null);
-            setVisible(true);
-        }
+
+	/*
+     * Here we resize the frame to hold the BoardPanel and SidePanel
+     * instances, center the window on the screen, and show it to the user.
+	 */
+	private void resize(){
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
 	private Tetris() {
-           
 		/*
 		 * Set the basic properties of the window.
 		 */
-                super("Tetris");
+		super("Tetris");
 		setBasicProperties();
 		/*
 		 * Initialize the BoardPanel and SidePanel instances.
@@ -400,7 +405,7 @@ public class Tetris extends JFrame {
 					lLogicTimer.reset();
 					break;
 				}	
-                        }
+			}
 		});
 		resize();
 	}
