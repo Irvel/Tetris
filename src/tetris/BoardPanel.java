@@ -323,11 +323,43 @@ public class BoardPanel extends JPanel {
 	}
 
 	/**
+	 * Gets the current alpha amount
+	 * @return The alpha amount
+	 */
+	public float getAlphaAmount() {
+		return this.fAlphaAmount;
+	}
+
+	/**
+	 * Gets the current alpha modifying factor
+	 * @return The alpha factor
+	 */
+	public float getAlphaFactor() {
+		return this.fAlphaFactor;
+	}
+
+	/**
 	 * Sets the tile matrix
 	 * @param tilMat The tile matrix.
 	 */
 	public void setTiles(TileType[][] tilMat) {
 		tilTile = tilMat;
+	}
+
+	/**
+	 * Sets the current alpha amount
+	 * @param fAlphaAmount The alpha amount
+	 */
+	public void setAlphaAmount(float fAlphaAmount) {
+		this.fAlphaAmount = fAlphaAmount;
+	}
+
+	/**
+	 * Sets the current alpha factor
+	 * @param fAlphaFactor The alpha factor
+	 */
+	public void setAlphaFactor(float fAlphaFactor) {
+		this.fAlphaFactor = fAlphaFactor;
 	}
 
 	/**
@@ -446,7 +478,7 @@ public class BoardPanel extends JPanel {
 			 * When the alpha has reched the maximum value, start decreasing
 			 * it and viceversa.
 			 */
-			if(fAlphaAmount >= 0.8f || fAlphaAmount <= 0.09f){
+			if(fAlphaAmount >= 0.8f || fAlphaAmount <= 0.1f){
 				fAlphaFactor *= -1;
 			}
 

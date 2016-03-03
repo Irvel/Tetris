@@ -75,6 +75,8 @@ public class StateHandler {
         objOut.writeObject(tetGame.getPieceRow());
         objOut.writeObject(tetGame.getPieceRotation());
         objOut.writeObject(tetGame.getBoard().getTiles());
+        objOut.writeObject(tetGame.getBoard().getAlphaAmount());
+        objOut.writeObject(tetGame.getBoard().getAlphaFactor());
         objOut.writeObject(tetGame.getDropCooldown());
     }
 
@@ -99,6 +101,8 @@ public class StateHandler {
         tetGame.setPieceRow((int) objIn.readObject());
         tetGame.setPieceRotation((int) objIn.readObject());
         tetGame.getBoard().setTiles ((TileType[][]) objIn.readObject());
+        tetGame.getBoard().setAlphaAmount ((float) objIn.readObject());
+        tetGame.getBoard().setAlphaFactor ((float) objIn.readObject());
         tetGame.setDropCooldown((int) objIn.readObject());
     }
 
