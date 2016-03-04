@@ -246,8 +246,10 @@ public class Tetris extends JFrame {
 		bPaused = !bPaused;
 		if(bPaused){
 			sTrack.stop();
+			// Remove the background image when the game is paused
 			board.setImage(0);
-		}else{
+		}
+		else{
 			board.setImage(1);
 			sTrack.setLooping(true);
 			sTrack.play();
@@ -308,29 +310,37 @@ public class Tetris extends JFrame {
 	 * @param keyEvent The key pressed
 	 */
 	private void keyAction(KeyEvent keyEvent){
-		switch (keyEvent.getKeyCode()){
-			case KeyEvent.VK_S:
-				goDown();
-				break;
-			case KeyEvent.VK_A:
-				moveLeft();
-				break;
-			case KeyEvent.VK_D:
-				moveRight();
-				break;
-			case KeyEvent.VK_Q:
-				if(!this.isGameOver())
+		// Do this only if we're in running game
+		if(!this.isGameOver()) {
+			switch (keyEvent.getKeyCode()) {
+				case KeyEvent.VK_S:
+					goDown();
+					break;
+				case KeyEvent.VK_A:
+					moveLeft();
+					break;
+				case KeyEvent.VK_D:
+					moveRight();
+					break;
+				case KeyEvent.VK_Q:
 					rotateAntiClockwise();
-				break;
-			case KeyEvent.VK_E:
-				rotateClockwise();
-				break;
-			case KeyEvent.VK_P:
-				pauseGame();
-				break;
-			default:
-				keyAction2(keyEvent);
-				break;
+					break;
+				case KeyEvent.VK_E:
+					rotateClockwise();
+					break;
+				case KeyEvent.VK_P:
+					pauseGame();
+					break;
+				case KeyEvent.VK_T:
+					stopTrack();
+					break;
+				default:
+					keyAction2(keyEvent);
+					break;
+			}
+		}
+		else {
+			keyAction2(keyEvent);
 		}
 	}
 	/**
@@ -347,9 +357,6 @@ public class Tetris extends JFrame {
 				break;
 			case KeyEvent.VK_C:
 				load();
-				break;
-			case KeyEvent.VK_T:
-				stopTrack();
 				break;
 			default:
 				break;
@@ -401,8 +408,11 @@ public class Tetris extends JFrame {
 				 * any cycles that might still be elapsed.
 				 */
 				case KeyEvent.VK_S:
-					lLogicTimer.setCyclesPerSecond(fGameSpeed);
-					lLogicTimer.reset();
+					// Do this only if we are currently inside a game
+					if(tilCurrentType != null && !Tetris.this.isGameOver()){
+						lLogicTimer.setCyclesPerSecond(fGameSpeed);
+						lLogicTimer.reset();
+					}
 					break;
 				}	
 			}
