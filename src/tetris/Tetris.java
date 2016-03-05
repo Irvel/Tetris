@@ -409,7 +409,7 @@ public class Tetris extends JFrame {
 				 */
 				case KeyEvent.VK_S:
 					// Do this only if we are currently inside a game
-					if(tilCurrentType != null && !Tetris.this.isGameOver()){
+					if(!Tetris.this.isGameOver()){
 						lLogicTimer.setCyclesPerSecond(fGameSpeed);
 						lLogicTimer.reset();
 					}
@@ -600,9 +600,9 @@ public class Tetris extends JFrame {
                         sBottom2.stop();
                         sTrack.stop();
                         sOver.play();
-			this.isGameOver = true;
+						this.isGameOver = true;
                         board.setImage(0);
-			lLogicTimer.setPaused(true);
+						lLogicTimer.setPaused(true);
 		}		
 	}
 
