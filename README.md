@@ -4,7 +4,7 @@ improvements are mainly focused in extended functionality and bug-fixes.
 
 ## The list of improvements include:
 
-- [X] The has the ability to save and load a previous version of the game
+- [X] The ability to save and load a previous version of the game
 - [X] The displaying of the keys to save and load a previous state of the 
 game(G & C) on the right pane of the screen
 - [X] The classic Tetris soundtrack playing in the background
